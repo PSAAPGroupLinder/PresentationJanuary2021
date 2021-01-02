@@ -1,0 +1,261 @@
+%!TEX root = ./presentation.tex
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%
+% Font and Colors %
+%%%%%%%%%%%%%%%%%%%
+
+% font theme
+\usefonttheme[onlymath]{serif}
+\usepackage{mathpazo}
+
+% blocks command
+%\setbeamertemplate{blocks}[default]
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% blocksatz aktivieren
+\let\raggedright\relax
+
+
+%References
+\usepackage[absolute,overlay]{textpos} 
+\newenvironment{reference}[2]{% 
+  \begin{textblock*}{\textwidth}(#1,#2) 
+      \tiny\sc}{\end{textblock*}}
+%      \tiny\sc\color{darkblue}}{\end{textblock*}}
+\newcommand{\refh}{1.2em}
+\newcommand{\refv}{91.2mm}
+
+% colors
+% set simtech colors
+\definecolor{lightblue}{cmyk}{0.07,0.04,0,0.05}
+\definecolor{mediumblue}{cmyk}{0.17,0.07,0,0.16}
+\definecolor{darkblue}{cmyk}{1.0,0.47,0,0.47}
+\definecolor{orange}{cmyk}{0.0,0.65,0.92,0.09}
+
+\definecolor{darkred}{cmyk}{0.0,1.0,0.65,0.34}
+%\definecolor{darkred}{cmyk}{1.,1.,1.,1.}
+
+% set color-commands
+\newcommand{\lightblue}[1]{{\color{lightblue}#1}}
+\newcommand{\mediumblue}[1]{{\color{mediumblue}#1}}
+\newcommand{\darkblue}[1]{{\color{darkblue}#1}}
+\renewcommand{\darkblue}[1]{{\color{darkred}#1}}
+\newcommand{\orange}[1]{{\color{orange}#1}}
+\newcommand{\darkred}[1]{{\color{darkred}#1}}
+
+% set beamer meta-colors
+% title
+\setbeamercolor{title}{fg=darkred}
+\setbeamercolor{conference}{fg=black}
+% header
+\setbeamercolor{networknumber in header}{fg=lightblue}
+\setbeamercolor{networktitle in header}{fg=darkred}
+% footer
+\setbeamercolor{institute in footer}{fg=darkred}
+\setbeamercolor{slidenumber in footer}{fg=darkred}
+% frames
+\setbeamercolor{frametitle}{fg=darkred}
+\setbeamercolor{structure}{fg=black}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Layout Definitions %
+%%%%%%%%%%%%%%%%%%%%%%
+
+% define placeholders
+\newcommand{\mytitle}{}
+\newcommand{\myauthor}{}
+\newcommand{\myinstitute}{}
+\newcommand{\myconference}{}
+\newcommand{\mydate}{}
+\newcommand{\myfootline}{}
+\newcommand{\myoutline}{}
+
+% define title page layout
+\setbeamertemplate{title page}
+{
+\begin{center}
+\vskip 2ex
+{\usebeamercolor[fg]{title}\bf\large\begin{block}{\begin{center}\mytitle\end{center}}\end{block}}%\\[3ex]
+\vspace*{3ex}
+%%%{\bf \myauthor}\\[4ex]
+%%%\includegraphics[height=0.2\paperheight]{unilogo.eps}\\[2ex]
+{\bf \myauthor}%\\[5ex]
+\\[2ex]
+{\small\myinstitute}\\[5ex]
+\includegraphics[height=0.2\paperheight]{unilogo.eps}\\[5ex]
+%{\normalsize\textbf{Outline}}\\[1ex]
+%{\myoutline}
+\end{center}
+}
+
+% define slidedir and load commands
+\newcommand{\slidedir}{}
+\newcommand{\inputfig}[2]{}
+\newcommand{\load}[1]{\renewcommand{\slidedir}{#1} \input #1/slide.tex}
+
+% turn off navigation symbols
+\beamertemplatenavigationsymbolsempty
+%\setbeamertemplate{navigation symbols}{}
+
+% set margins
+%\setbeamersize{text margin left=1.3cm,text margin right=1.2cm}
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+% set background
+%\setbeamertemplate{background}{
+%\includegraphics[width=\paperwidth,height=\paperheight]{background.eps}
+%}
+
+% set colorboxes for foot- and headlines
+%\definecolor{darkred}{rgb}{0.8,0,0}
+\definecolor{logolightblue}{cmyk}{0.1,0.05,0,0.05}
+\definecolor{logomediumblue}{cmyk}{0.47,0.22,0,0.22}
+\definecolor{logodarkred}{cmyk}{0.0,1.0,0.65,0.34}
+%\definecolor{logodarkred}{cmyk}{1,1,1,1}
+\setbeamercolor{section in toc}{fg=logomediumblue,bg=white}
+\setbeamercolor{structure}{fg=logodarkred}
+\setbeamercolor{alerted text}{fg=darkred!80!gray}
+\setbeamercolor*{palette primary}{fg=darkred,bg=white!40!gray}
+\setbeamercolor*{palette secondary}{bg=gray!20!white,fg=logodarkred}
+\setbeamercolor*{palette tertiary}{fg=white,bg=logodarkred}
+\setbeamercolor*{palette quaternary}{fg=logodarkred,bg=gray!5!white}
+\setbeamercolor*{text bottom left}{parent=palette tertiary}
+\setbeamercolor*{text bottom center}{parent=palette secondary}
+\setbeamercolor*{text bottom right}{parent=palette primary}
+\setbeamercolor*{text top left}{parent=palette tertiary}
+\setbeamercolor*{text top right}{parent=palette primary}
+
+% set headline
+\defbeamertemplate*{headline}{title}{}
+
+\defbeamertemplate*{headline}{transition}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{text top left}%
+    \usebeamerfont{text top left}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,left]{text top right}%
+    \usebeamerfont{text top right}\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\defbeamertemplate*{headline}{body}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{text top left}%
+    \usebeamerfont{text top left}\PartNr\hspace*{2ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,left]{text top right}%
+    \usebeamerfont{text top right}\hspace*{2ex}\PartShort
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+
+% define footline on title slide
+%\defbeamertemplate*{footline}{title}{}
+\defbeamertemplate*{footline}{title}
+{
+\begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1ex,center]{}
+\begin{beamercolorbox}[wd=0.008\paperwidth,ht=2.5ex,dp=1ex,center]{}
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=0.992\paperwidth,ht=2.5ex,dp=1ex,center]{conference}
+\bf \small\myconference%~--~\mydate
+\vskip 2ex
+\end{beamercolorbox}
+\end{beamercolorbox}
+}
+
+
+\defbeamertemplate*{footline}{transition}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{text bottom left}%
+    \usebeamerfont{text bottom left} \footlinetextleft
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{text bottom center}%
+    \usebeamerfont{text bottom center} \footlinetextcenter
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{text bottom right}%
+    \usebeamerfont{text bottom right} \footlinetextright\hspace*{4em}\hspace*{4ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\defbeamertemplate*{footline}{transitionA}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{text bottom left}%
+    \usebeamerfont{text bottom left} \footlinetextleft
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{text bottom center}%
+    \usebeamerfont{text bottom center} \footlinetextcenter
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{text bottom right}%
+    \usebeamerfont{text bottom right} \footlinetextright\hspace*{4em}\hspace*{4ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+
+\defbeamertemplate*{footline}{body}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{text bottom left}%
+    \usebeamerfont{text bottom left} \footlinetextleft
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{text bottom center}%
+    \usebeamerfont{text bottom center} \footlinetextcenter
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{text bottom right}%
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+    \usebeamerfont{text bottom right} \footlinetextright{}\hspace*{4em}
+    \insertframenumber{}\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% set frametitle
+%\setbeamercolor{frametitle}{frametitle}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamertemplate{frametitle}
+{
+\begin{flushleft}
+\insertframetitle\par
+\end{flushleft}
+}
+
+% set item bullets
+%\setbeamertemplate{itemize item}{$\bullet$}
+%\setbeamertemplate{itemize items}[ball]
+
+% innertheme
+%\useinnertheme{rounded}
+%\useinnertheme{rectangles}
+\useinnertheme{circles}
+
+% outertheme
+%\useoutertheme{shadow}
+
+% define command for titlepage
+\newcommand{\titleslide}
+{
+\setbeamertemplate{headline}[title]
+\setbeamertemplate{footline}[title]
+\begin{frame}
+\titlepage
+\end{frame}
+\setcounter{framenumber}{0}
+\setbeamertemplate{headline}[body]
+\setbeamertemplate{footline}[body]
+}
+
+\mode<all>

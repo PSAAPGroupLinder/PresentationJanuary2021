@@ -1,0 +1,69 @@
+% USE THIS TO CREATE A PRESENTATION
+\documentclass[8pt,a4,t]{beamer}
+
+\usepackage{amsfonts,amssymb,amsmath,exscale} 
+% \usepackage[final]{animate}
+\usepackage{pst-node}
+\usepackage[english]{babel}
+\usepackage{colordvi}
+\usepackage{psfrag}
+\usepackage{macros}
+
+
+\mode<presentation>{\usetheme{stanford}}
+
+\def\supertiny{\font\supertinyfont = cmss10 at 3.75pt \relax \supertinyfont}
+
+%-----------------------------------------------------------------------
+% lecture title
+\renewcommand{\mytitle}{3D modeling of fracture/discontinuities for classical and micromorphic continua}
+% project authors
+\renewcommand{\myauthor}{Tim Ngo, Prajwal Kammardi Arunachala, Matthias Neuner, Christian Linder}
+% institute
+\renewcommand{\myinstitute}{Stanford University $\cdot$ Department of Civil \& Environmental Engineering}
+% conference name
+\renewcommand{\myconference}{PSAAP Presentation - January 7, 2021}
+% footline
+\newcommand{\footlinetextleft}{Christian Linder}
+\newcommand{\footlinetextcenter}{Stanford University}
+\newcommand{\footlinetextright}{PSAAP-Presentation}
+
+%-----------------------------------------------------------------------
+% begin of document
+%-----------------------------------------------------------------------
+\newcommand{\PartNr}{}
+\newcommand{\PartShort}{}
+
+\begin{document}
+
+{\small
+% create title slide
+\titleslide
+
+\load{slides/s.01}				% slide 01
+\load{slides/s.02}				% slide 02
+\load{slides/s.03}				% slide 03
+\load{slides/s.04}				% slide 04
+
+
+\newcommand{\sig}{\boldsymbol {\sigma}}
+\newcommand{\alphaDNL}{\tilde{\kappa}}
+\newcommand{\alphaD}{\kappa}
+\renewcommand{\*}{\mathrm}
+\renewcommand{\eps}{\boldsymbol \varepsilon}
+\newcommand{\Cel}{\mathbb{C}}
+\load{slides/s.ge_damage_plasticity_01}				
+\load{slides/s.ge_damage_plasticity_02}			
+\load{slides/s.l_shape_01}				
+\load{slides/s.l_shape_02}			
+\load{slides/s.mode_ii_01}		
+\load{slides/s.mode_ii_02}	
+\load{slides/s.triax_01}
+\load{slides/s.triax_02}
+\load{slides/s.outlook_micromorphic}
+}
+%
+%-----------------------------------------------------------------------
+% end of document
+%-----------------------------------------------------------------------
+\end{document}

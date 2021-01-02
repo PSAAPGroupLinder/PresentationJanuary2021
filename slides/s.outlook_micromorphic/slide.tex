@@ -1,0 +1,28 @@
+%!TEX root = ../presentation.tex
+
+\begin{frame}{}
+    \textbf{Combination of the micromorphic continuum and the gradient-enhanced damage framework:}
+    \begin{itemize}
+        \item Incorporation of the micromorphic continuum (in the sense of A.C. Eringen) into the continuum damage framework:
+                \begin{align*}
+                    \sigma^{kl} &= (1-\omega) \, \bar\sigma^{kl} \\
+                    s^{kl} &= (1-\omega) \, \bar{s}^{kl} \\
+                    m^{klm} &= (1-\omega) \, \bar{m}^{klm} \\
+                \end{align*}
+        \item Damage parameter $\omega$ related to internal state variable(s) $\boldsymbol \kappa$ (local) and $\boldsymbol {\tilde\kappa}$ (nonlocal):
+                \begin{equation*}
+                    \omega = \omega (  \boldsymbol \kappa, \boldsymbol {\tilde\kappa} )
+                \end{equation*}
+        \item Evolution of $\boldsymbol \kappa$ related to the evolution of plastic deformations:
+            \begin{equation*}
+                \boldsymbol {\dot \kappa } =  \boldsymbol {\dot \kappa } ( \boldsymbol {\dot F}^\mathrm{p}, \boldsymbol {\dot \chi}^\mathrm{p}, \nabla \boldsymbol {\dot \chi}^\mathrm{p},%
+                \boldsymbol \sigma, \boldsymbol s, \boldsymbol {m})
+            \end{equation*}
+        \item Separate PDE for representing the nonlocal character of damage:
+            \begin{equation*}
+                {\boldsymbol {\tilde \kappa} - l^2 \, \nabla ^2 \boldsymbol {\tilde\kappa} }= \boldsymbol \kappa
+            \end{equation*}
+        \item Naturally incorporates the micromorphic continuum into the framework of continuum damage mechanics
+        \item Advantage: Separate length scale for damage, natural length scales introduced by the micromorphic continuum remain \emph{available} for multiscale modeling
+    \end{itemize}
+\end{frame}

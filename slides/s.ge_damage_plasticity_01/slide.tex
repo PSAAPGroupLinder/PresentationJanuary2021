@@ -1,0 +1,36 @@
+%!TEX root = ../presentation.tex
+\begin{frame}{Coupled Damage-Plasticity Models}
+    \textbf{Damage-plasticity models, classical local form (small strain regime):}
+    \begin{minipage}{0.54\textwidth}
+    \begin{align*}
+        \sig &=  (1-\omega) \,\bar\sig  \\
+             &= (1-\omega)  \, \Cel : \eps^\*{el} \\
+        \eps^\*{el} &= \eps - \eps^\*{p}\\
+        \omega &= \omega ( \alphaD ) \\
+        \dot \kappa &=  \dot \kappa (\dot \eps^\*{p}, \sig)
+    \end{align*}
+            
+    \begin{align*}
+        \nabla \sig + \boldsymbol f &= \boldsymbol 0 \\
+    \end{align*}
+    \end{minipage}
+    \begin{minipage}{0.44\textwidth}
+        Relation between nominal stress ($\sig$) and effective stress ($\bar \sig$) via damage parameter $\omega$ \\[.5em]
+        Decomposition of the total strain $\eps$ into elastic and plastic parts \\[.5em]
+        Evolution laws for damage $\omega$ and damage driving internal state variables $\alphaD$  \\[2.0em]
+    Classical equilibrium equation
+    \vspace{0.0em}
+    \end{minipage}
+
+    \begin{itemize}
+        \item Inelastic (plastic) deformations
+        \item Degradation of stiffness due to material damage
+        \item Representation of hardening and softening material behavior of quasi-brittle materials:
+        \begin{itemize}
+            \item Ductile behavior in confined compression
+            \item Brittle behavior in tension
+        \end{itemize}
+        \item Numerous applications to various cohesive-frictional materials (concrete, rock mass, ...)
+        \item Different approaches for regularizing softening material available in the literature
+    \end{itemize}
+\end{frame}

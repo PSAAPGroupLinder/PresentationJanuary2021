@@ -1,0 +1,1423 @@
+%Set Main file:
+%!TEX root = ./presentation.tex
+%=======================================================================
+
+%------------------------------------------------------------------------
+% Current work related abbreviations
+%------------------------------------------------------------------------
+\newcommand{\bft      }[1]{{\black\normalsize\textbf{#1}}}
+\newcommand{\light    }{\color[rgb]{0.85 0.85 0.85}}
+\newcommand{\cbody   }{\calS}
+\newcommand{\INN}{\quad\text{in}\quad}
+\newcommand{\GRAD}{\text{GRAD}} 
+\newcommand{\snode   }{n_{\text{node}}}
+\newcommand{\selem   }{n_{\text{elem}}}
+\newcommand{\FOR}{\quad\text{for}\quad}
+\DeclareRobustCommand{\toF}{{\widehat\BF^h_\mu}}
+\DeclareRobustCommand{\toFi}{{\widehat\BF^{h^{-1}}_\mu}}
+\DeclareRobustCommand{\toFe}{{\widehat\BF^{h^{-T}}_\mu}}
+\DeclareRobustCommand{\toFt}{{\widehat\BF^{h^{T}}_\mu}}
+\DeclareRobustCommand{\DIV}{{\text{DIV}}}
+\newcommand{\Gemt    }{\BG^T_{(e)}}
+\newcommand{\gemt    }{\Bg^T_{(e)}}
+\newcommand{\ModeKN}{{\operator@font\langle kN\rangle}}
+\newcommand{\ModeCN}{{\operator@font\langle 0N\rangle}}
+\newcommand{\ModeLN}{{\operator@font\langle 1N\rangle}}
+\newcommand{\ModeKM}{{\operator@font\langle kM\rangle}}
+\newcommand{\ModeCM}{{\operator@font\langle 0M\rangle}}
+\newcommand{\ModeLM}{{\operator@font\langle 1M\rangle}}
+%\newcommand{\IFF}{\quad\text{if}\quad}
+%
+%-----------------------------------------------------------------------
+%VOLKER - viscoelasticity
+%-----------------------------------------------------------------------
+
+\newcommand{\Eenuc}{E_{\mbox{{\scriptsize enuc}}}}
+\newcommand{\Eext}{E_{\mbox{{\scriptsize ext}}}}
+\newcommand{\Exc}{E_{\mbox{{\scriptsize xc}}}}
+\newcommand{\Veffs}{V_{\mbox{{\scriptsize eff}}}}
+\newcommand{\Vext}{V_{\mbox{{\scriptsize ext}}}}
+\newcommand{\Vxc}{V_{\mbox{{\scriptsize xc}}}}
+\newcommand{\df}{\, \mathrm{d}}
+\newcommand{\br}{\textbf{r}}
+\newcommand{\bR}{\textbf{R}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eneq}{\end{equation}}
+\newcommand{\beqry}{\begin{eqnarray}}
+\newcommand{\eneqry}{\end{eqnarray}}
+\newcommand{\mycomment}[1]{}
+
+\newcommand{\hhat}{\hat{H}}
+\newcommand{\nl}{\newline}
+\newcommand{\real}{\mathcal{R}}
+\newcommand{\erf}{\mathrm{erf}\,}
+\newcommand{\erfc}{\mathrm{erfc}\,}
+\newcommand{\gl}{\; = \; }
+
+
+%averaging
+\newcommand{\av}[1]{\left<#1\right>}
+\newcommand{\So}{S_0}
+\newcommand{\dlo}{\Abs{d\lo}}
+\newcommand{\intSo}{\dfrac{1}{\Abs{\So}}\int_{\So}\hspace{-6pt}}
+%\newcommand{\intSo}{\dfrac{1}{\Abs{\So}}\int\limits_{\So}}
+\newcommand{\Rdim}{\NIR^3}
+\newcommand{\psitotal}{\Psi}
+\newcommand{\matpoint}{{\cal P}}
+\newcommand{\matvol}{{\cal V}}
+
+%chain
+\newcommand{\Ro}{R_0}
+\newcommand{\Rov}{\BR_0}
+\newcommand{\lo}{\Blambda_0}
+\newcommand{\Uch}{U_{ch}}
+\newcommand{\Fch}{f_{ch}}
+\newcommand{\kch}{k_{ch}}
+
+\newcommand{\Uf}{\psi_{f}}
+\newcommand{\Ff}{f_{f}}
+\newcommand{\Ffveq}{\Bf_{f}^{\ast}}
+\newcommand{\Ffv}{\Bf_{f}}
+\newcommand{\Ffinv}{f_{f}^{-1}}
+\newcommand{\kf}{k_{f}}
+
+\newcommand{\kBT}{k_{B}T}
+
+\newcommand{\lv}{\Blambda}
+\newcommand{\lbar}{\bar{\Blambda}}
+\newcommand{\psichain}{\psi_{ch}}
+\newcommand{\llim}{\lambda^{lim}}
+\newcommand{\lmax}{\lambda^{max}}
+\newcommand{\lr}{\lambda_r}
+\newcommand{\Linv}{\calL^{-1}}
+
+% constraint
+\newcommand{\Lo}{\Bl_0}
+\newcommand{\Fxi}{\calF_{\xi}}
+\newcommand{\pxi}{p_{\xi}}
+%\newcommand{\intSox}{\dfrac{1}{\Abs{\So}}\int\limits_{S_{0,x}}}
+\newcommand{\intSox}{\dfrac{1}{\Abs{\So}}\int_{S_{0,x}}\hspace{-10pt}}
+\newcommand{\xiq}{\xi^m}
+\newcommand{\Fxiq}{\calF_{\xiq}}
+\newcommand{\pxiq}{p_{\xiq}}
+\newcommand{\loq}{\Blambda_{0}^m}
+\newcommand{\pq}{p^m}
+%\newcommand{\nLo}{n_{\Lo}}
+%\newcommand{\RLo}{\BR_{\Lo}}
+\newcommand{\nLo}{n_{l_0}}
+\newcommand{\RLo}{\BR_{l_0}}
+\newcommand{\LLo}{\Bl}
+\newcommand{\RL}{\BR_{l}}
+%\newcommand{\RL}{\BR_{\LLo}}
+\newcommand{\lvq}{\Blambda^m}
+\newcommand{\lveq}{\Blambda^{\ast}}
+\newcommand{\lbarq}{\bar{\Blambda}^m}
+\newcommand{\pqsim}{\tilde{p}^m}
+\newcommand{\phia}{\phi_{\alpha}(\lo)}
+\newcommand{\psia}{\psi_{\alpha}(\Lo)}
+
+\newcommand{\lopi}{\Blambda_{0}^i}
+\newcommand{\lopf}{\Blambda_{0}^f}
+\newcommand{\lvpi}{\Blambda_{0}^i}
+
+%\newcommand{\xo}{x_0}
+%\newcommand{\yo}{y_0}
+%\newcommand{\zo}{z_0}
+%\newcommand{\xol}{\tilde{x}_0}
+%\newcommand{\yol}{\tilde{y}_0}
+%\newcommand{\zol}{\tilde{z}_0}
+\newcommand{\xo}{x_0}
+\newcommand{\yo}{y_0}
+\newcommand{\zo}{z_0}
+\newcommand{\xol}{\tilde{x}_0}
+\newcommand{\yol}{\tilde{y}_0}
+\newcommand{\zol}{\tilde{z}_0}
+
+%numerical part
+\newcommand{\loi}{\Blambda_{0,i}}
+\newcommand{\loj}{\Blambda_{0,j}}
+\newcommand{\lok}{\Blambda_{0,k}}
+\newcommand{\lvi}{\Blambda_{i}}
+\newcommand{\lvj}{\Blambda_{j}}
+\newcommand{\lbari}{\bar{\Blambda}_{i}}
+\newcommand{\lbark}{\bar{\Blambda}_{k}}
+\newcommand{\phiai}{\phi_{\alpha}(\loi)}
+\newcommand{\nua}{\Bnue_{\alpha}}
+\newcommand{\nub}{\Bnue_{\beta}}
+
+\newcommand{\Lv}{\BLambda}
+\newcommand{\Nuev}{\text{\bf N}}
+\newcommand{\Lbar}{\bar{\BLambda}}
+
+\newcommand{\ea}{\Be_a}
+\newcommand{\eb}{\Be_b}
+\newcommand{\Ea}{\BE_a}
+\newcommand{\Eb}{\BE_b}
+\newcommand{\eas}{\Be_a^{*}}
+\newcommand{\ebs}{\Be_b^{*}}
+\newcommand{\Eas}{\BE_a^{*}}
+\newcommand{\Ebs}{\BE_b^{*}}
+
+\newcommand{\freeenergy}{{\cal A}}
+\newcommand{\macrofreeenergy}{\Psi}
+\newcommand{\networkenergy}{\Psi_{net}}
+\newcommand{\networkenergyeq}{\Psi_{net}^{\ast}}
+\newcommand{\volenergy}{\Psi_{vol}}
+
+\newcommand{\Sphere}{S^2}
+%\newcommand{\lX}{\Lambda}
+%\newcommand{\lx}{\lambda}
+%\newcommand{\ssX}{{\cal L}_\BX}
+%\newcommand{\ssx}{{\cal L}_\Bx}
+% Continuum mechanics
+%\newcommand{\Fbar}{\bar\BF}
+%\newcommand{\Cbar}{\bar\BC}
+\newcommand{\refconf}{\calB}
+\newcommand{\curconf}{\calS}
+\newcommand{\Fset}{\BfrakF}
+
+\newcommand{\mue}{\mu}
+
+
+
+
+
+% zxx
+\DeclareRobustCommand{\bzero }{{\boldsymbol 0}}
+\newcommand{\sym}{\text{sym}}           
+\newcommand{\emascalar}{a}  	
+
+
+%------------------------------------------------------------------------
+% Standard Abbreviations
+%------------------------------------------------------------------------
+%
+\newcommand{\pd}[2]{\dfrac{\partial#1}{\partial#2}}
+%\newcommand{\Abs}[1]{\left|#1\right|}
+%\newcommand{\ndim}{n_{\text{dim}}}
+%\renewcommand{\div}{\text{div}}
+%\newcommand{\nablax}{\nabla_\Bx}
+%\newcommand{\AND}{\quad\text{and}\quad}
+%\newcommand{\OR}{\quad\text{or}\quad}
+%\newcommand{\WHERE}{\quad\text{where}\quad}
+%\newcommand{\WITH}{\quad\text{with}\quad}
+%\newcommand\eref[1]{(\ref{#1})}
+
+%\newcommand{\etal}{\textit{et~al.~}}
+
+
+
+
+
+
+
+
+
+%------------------------------------------------------------------------
+% Current work related abbreviations
+%------------------------------------------------------------------------
+%
+%\newcommand{\av}[1]{\left<#1\right>}
+\newcommand{\rnset}{\left\{\Bb_n\right\}_{n=1}^N}
+%\newcommand{\nn}{\IIn}
+\newcommand{\nn}{n}
+\newcommand{\nnn}{n}
+%\newcommand{\Uch}{U_{ch}}
+%\newcommand{\Fch}{\BF_{ch}}
+\newcommand{\Fchpm}{\BF_{ch}^\pm}
+\newcommand{\Dl}{D^{\lambda}}
+\newcommand{\FPK}{\BnP}
+\newcommand{\FPKs}{\text{P}}
+\newcommand{\PP}{\BP}
+\newcommand{\PPO}{\PP_\BX}
+\newcommand{\PPA}{\BA}
+\newcommand{\BPO}{\BB}
+%\newcommand{\freeenergy}{{\cal A}}
+%\newcommand{\macrofreeenergy}{\Bpsi}
+
+\newcommand{\hch}{\Bh_{ch}}
+\newcommand{\vch}{\av{\Bv_{ch}}}
+\newcommand{\vchp}{\av{\Bv_{ch}^+}}
+\newcommand{\vchm}{\av{\Bv_{ch}^-}}
+\newcommand{\vchpm}{\av{\Bv_{ch}^\pm}}
+\newcommand{\vtotal}{\av{\Bv}}
+\newcommand{\vtotalp}{\av{\Bv^+}}
+\newcommand{\vtotalm}{\av{\Bv^-}}
+\newcommand{\vtotalpm}{\av{\Bv^\pm}}
+\newcommand{\vviscous}{\bar{\Bv}}
+\newcommand{\vviscousp}{\bar{\Bv}^+}
+\newcommand{\vviscousm}{\bar{\Bv}^-}
+\newcommand{\vviscouspm}{\bar{\Bv}^\pm}
+\newcommand{\vscaled}{\av{\Bv}_\lambda}
+\newcommand{\hdis}{\Bh_{dis}}
+\newcommand{\hrev}{\Bh_{rev}}
+\newcommand{\velgrad}{\Bl}
+\newcommand{\xt}{(\Bx,t)}
+\newcommand{\rconf}{{\cal B}}
+\newcommand{\sconf}{{\cal S}}
+\newcommand{\particle}{{\cal P}}
+\newcommand{\motion}{\Bvarphi}
+\newcommand{\bodyforce}{\BB}
+\newcommand{\intvar}{\BcalI}
+\newcommand{\dissipation}{\calD}
+\newcommand{\pX}{P}
+\newcommand{\px}{p}
+\newcommand{\LX}{\BLambda}
+\newcommand{\Lx}{\Blambda}
+\newcommand{\OX}{\BT}
+\newcommand{\Ox}{\Bt}
+%\newcommand{\Sphere}{S^2}
+\newcommand{\lX}{\Lambda}
+\newcommand{\lx}{\lambda}
+\newcommand{\ssX}{{\cal L}_\BX}
+\newcommand{\ssx}{{\cal L}_\Bx}
+\newcommand{\Fbar}{\bar\BF}
+\newcommand{\Cbar}{\bar\BC}
+
+%----
+
+\newcommand{\gd}{\frakd}  		% generalized d
+\newcommand{\gu}{\fraku}  		% generalized u
+\newcommand{\gf}{\frakf}  		% generalized f
+\newcommand{\gb}{\frakb}  		% generalized f
+\newcommand{\gx}{\Bxi}    		% generalized xi
+\newcommand{\gS}{\frakS}  		% generalized stresses
+\newcommand{\gE}{\SE}     		% generalized strains
+\newcommand{\gt}{\frakt}  % generalized traction
+\newcommand{\gj}{\frakj}  % generalized traction
+\newcommand{\Nm}{\BnN_u}  
+\newcommand{\Ne}{\BnN_\emP}
+\newcommand{\Bbarm}{\bar\BnB_u} 
+\newcommand{\Bbare}{\bar\BnB_\emP}
+\newcommand{\Gcm}{\BG_{(c)}}
+\newcommand{\Gce}{\Gc_\emP}
+\newcommand{\Gem}{\BG_{(e)}}
+\newcommand{\Gee}{\Ge_\emP}
+\newcommand{\Jm}{\BJ}
+\newcommand{\Je}{\J_\emP}
+\newcommand{\permittivity}{\epsilon}
+
+\newcommand{\body}{\calB}
+\newcommand{\surface}{\Gamma}
+\newcommand{\J}{\frakJ}
+\newcommand{\Jmode}{\mathop{\J_{\operator@font mode}}}
+\newcommand{\Gc}{\frakC}
+\newcommand{\Gcmode}{\mathop{\Gc_{\operator@font mode}}}
+\newcommand{\Ge}{\frakE}
+\newcommand{\g}{\frake}
+\newcommand{\epv}{\Bxi}    % vector form of enhanced parameters
+\newcommand{\eps}{\xi}     % scalar form of enhanced parameters
+\newcommand{\epsmode}{\mathop{\xi_{\operator@font mode}}}
+
+\newcommand{\nsurf}{\mathop{n_{\operator@font surf}}}
+\newcommand{\ndisc}{\mathop{n_{\operator@font disc}}}
+\newcommand{\nelem}{\mathop{n_{\operator@font elem}}}
+\newcommand{\nnode}{\mathop{n_{\operator@font node}}}
+\newcommand{\jump}[1]{\jumpl#1\jumpr}
+%\newcommand{\jump}{\jumpi}              % [[ ... ]]
+\newcommand{\jumpl}{\mathopen{[\mkern-3mu[}}                % [[
+\newcommand{\jumpr}{\mathclose{]\mkern-3mu]}}               % ]]
+
+
+\newcommand{\modeIJ} {{\langle\frak{ij}\rangle}}
+\newcommand{\modeCC} {{\langle\frak{00}\rangle}}
+\newcommand{\modeCCn} {{\langle\frak{00}\text{n}\rangle}}
+\newcommand{\modeCCs} {{\langle\frak{00}\text{s}\rangle}}
+\newcommand{\modeCCt} {{\langle\frak{00}\text{t}\rangle}}
+\newcommand{\modeLs} {{\langle\frak{10}\rangle}}
+\newcommand{\modeLsn} {{\langle\frak{10}\text{n}\rangle}}
+\newcommand{\modeLss} {{\langle\frak{10}\text{s}\rangle}}
+\newcommand{\modeLst} {{\langle\frak{10}\text{t}\rangle}}
+\newcommand{\modeLt} {{\langle\frak{01}\rangle}}
+\newcommand{\modeLtn} {{\langle\frak{01}\text{n}\rangle}}
+\newcommand{\modeLts} {{\langle\frak{01}\text{s}\rangle}}
+\newcommand{\modeLtt} {{\langle\frak{01}\text{t}\rangle}}
+\newcommand{\modeQs} {{\langle\frak{20}\rangle}}
+\newcommand{\modeQt} {{\langle\frak{02}\rangle}}
+\newcommand{\modeQst} {{\langle\frak{11}\rangle}}
+\newcommand{\modeIJn} {{\langle\frak{ij}\text{n}\rangle}}
+\newcommand{\modeIJs} {{\langle\frak{ij}\text{s}\rangle}}
+\newcommand{\modeIJt} {{\langle\frak{ij}\text{t}\rangle}}
+\newcommand{\modeLlambda} {{\langle\frak{0\lambda}\rangle}}
+
+
+%\newcommand{\modeCN}{{\operator@font\langle 0n\rangle}}
+\newcommand{\modeCS}{{\operator@font\langle 0s\rangle}}
+\newcommand{\modeCT}{{\operator@font\langle 0t\rangle}}
+\newcommand{\modeLS}{{\operator@font\langle 1s\rangle}}
+\newcommand{\modeLT}{{\operator@font\langle 1t\rangle}}
+\newcommand{\modeA}{{\operator@font\langle 0\frakv\rangle}}
+\newcommand{\modeB}{{\operator@font\langle 1\fraky\rangle}}
+%\newcommand{\mode}{{\operator@font\langle \eulM \rangle}}
+\newcommand{\modeLSS}{{\operator@font\langle 1s\rangle_{st}}}
+\newcommand{\modeLTS}{{\operator@font\langle 1t\rangle_{st}}}
+\newcommand{\modeLSR}{{\operator@font\langle 1s\rangle_{ro}}}
+\newcommand{\modeLTR}{{\operator@font\langle 1t\rangle_{ro}}}
+\newcommand{\modeLSH}{{\operator@font\langle 1s\rangle_{sh}}}
+\newcommand{\modeLTH}{{\operator@font\langle 1t\rangle_{sh}}}
+\newcommand{\modeBS}{{\operator@font\langle 1\fraky\rangle_{st}}}
+\newcommand{\modeBR}{{\operator@font\langle 1\fraky\rangle_{ro}}}
+
+
+\newcommand{\modeK}{{\operator@font\langle k\rangle}}
+\newcommand{\modeC}{{\operator@font\langle 0\rangle}}
+\newcommand{\modeL}{{\operator@font\langle 1\rangle}}
+\newcommand{\modeQ}{{\operator@font\langle q\rangle}}
+\newcommand{\modeKN}{{\operator@font\langle kn\rangle}}
+\newcommand{\modeCN}{{\operator@font\langle 0n\rangle}}
+\newcommand{\modeLN}{{\operator@font\langle 1n\rangle}}
+\newcommand{\modeKM}{{\operator@font\langle km\rangle}}
+\newcommand{\modeCM}{{\operator@font\langle 0m\rangle}}
+\newcommand{\modeLM}{{\operator@font\langle 1m\rangle}}
+
+\newcommand{\heaviside}{\calH}
+\newcommand{\softening}{\calS}
+\newcommand{\discpot}{\SH}
+\newcommand{\iv}{\calI}				% internal variable
+
+\newcommand{\dV}{\mkern\medmuskip dV}                         % dV
+\newcommand{\dA}{\mkern\medmuskip dA}                         % dA
+\newcommand{\dS}{\mkern\medmuskip dS}                         % dS
+\newcommand{\dx}{\mkern\medmuskip dx}                         % dx
+
+\newcommand{\emH}{H}
+\newcommand{\emHc}{\chi}
+\newcommand{\emP}{\varphi}
+\newcommand{\emE}{\BE}
+\newcommand{\emD}{\BD}
+\newcommand{\emfreecharge}{\rho^e}
+\newcommand{\emsurfcharge}{q}
+\newcommand{\emCtotal}{\IC}
+\newcommand{\emC}{\NIC}
+\newcommand{\emh}{\NIh}
+\newcommand{\emb}{\NIb}
+\newcommand{\emp}{\Bp}\newcommand{\empscalar}{p}
+\newcommand{\emCctotal}{\ID}
+\newcommand{\emCctotalij}{\NID}
+
+\newcommand{\assemble}{\mathop{\calc@currsize{A}}}
+\def\calc@currsize#1{%
+   \ifx\@currsize\tiny%
+      \lower@factor{0.88}{0.65}{0.7}{0.7}%
+      \adjust@size{cmss}{12}{8}{7}{7}{#1}%
+   \else%
+   \ifx\@currsize\scriptsize%
+      \lower@factor{0.85}{0.63}{0.65}{0.7}%
+      \adjust@size{cmss}{14.4}{10.95}{8}{7}{#1}%
+   \else%
+   \ifx\@currsize\footnotesize%
+      \lower@factor{0.82}{0.7}{0.6}{0.7}%
+      \adjust@size{cmss}{17.28}{14.4}{9}{7}{#1}%
+   \else%
+   \ifx\@currsize\small%
+      \lower@factor{0.9}{0.75}{0.72}{0.72}%
+      \adjust@size{lcmss}{16.59}{13.82}{10}{8}{#1}%
+   \else%
+   \ifx\@currsize\normalsize%
+      \lower@factor{0.95}{0.81}{0.75}{0.75}%
+      \adjust@size{lcmss}{19.907}{16.59}{10}{8}{#1}%
+   \else%
+   \ifx\@currsize\large%
+      \lower@factor{0.95}{0.8}{0.81}{0.8}%
+      \adjust@size{lcmss}{23.89}{19.907}{13.82}{10}{#1}%
+   \else%
+   \ifx\@currsize\Large%
+      \lower@factor{0.95}{0.79}{0.8}{0.8}%
+      \adjust@size{lcmss}{28.66}{23.89}{16.59}{13.82}{#1}%
+   \else%
+   \ifx\@currsize\LARGE%
+      \lower@factor{0.95}{0.82}{0.82}{0.8}%
+      \adjust@size{lcmss}{34.4}{28.66}{19.907}{16.59}{#1}%
+   \else%
+   \ifx\@currsize\huge%
+      \lower@factor{0.95}{0.8}{0.8}{0.81}%
+      \adjust@size{lcmss}{41.28}{34.4}{28.66}{23.89}{#1}%
+   \else%
+   \ifx\@currsize\Huge%
+      \lower@factor{0.95}{0.82}{0.8}{0.79}%
+      \adjust@size{lcmss}{41.28}{41.28}{34.4}{28.66}{#1}%
+   \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi%
+}
+\def\lower@factor#1#2#3#4{%
+   \def\f@lower{#1}%
+   \def\tf@lower{#2}%
+   \def\sf@lower{#3}%
+   \def\ssf@lower{#4}%
+}
+\def\adjust@size#1#2#3#4#5#6{%
+   \mathchoice%
+  {\hbox{\contents@hbox{#1}{#2}{\f@lower}{#6}}}%
+  {\hbox{\contents@hbox{#1}{#3}{\tf@lower}{#6}}}%
+  {\hbox{\contents@hbox{#1}{#4}{\sf@lower}{#6}}}%
+  {\hbox{\contents@hbox{#1}{#5}{\ssf@lower}{#6}}}%
+   \check@mathfonts%
+}
+\def\contents@hbox#1#2#3#4{%
+   \edef\sfdefault{#1}\edef\f@size{#2}\sffamily%
+   \selectfont{\@unit\lower #3\dp\unit@box\hbox{#4}}%
+}
+\newbox\unit@box
+\def\@unit{\setbox\unit@box\hbox{(}}
+
+
+%------------------------------------------------------------------------
+% Standard Abbreviations
+%------------------------------------------------------------------------
+%
+\newcommand{\Abs}[1]{\left|#1\right|}
+\newcommand{\ndim}{n_{\text{dim}}}
+\renewcommand{\div}{\text{div}}
+\newcommand{\nablax}{\nabla_\Bx}
+\newcommand{\AND}{\quad\text{and}\quad}
+\newcommand{\WHERE}{\quad\text{where}\quad}
+\newcommand{\WITH}{\quad\text{with}\quad}
+\newcommand\eref[1]{(\ref{#1})}
+\newcommand{\entropy}{{\cal S}}
+\newcommand{\MIT}{\quad\text{mit}\quad}
+\newcommand{\UND}{\quad\text{und}\quad}
+\newcommand{\WOBEI}{\quad\text{wobei}\quad}
+
+%------------------------------------------------------------------------
+% Journal abbreviations (http://scieng.library.ubc.ca/coden/)
+%------------------------------------------------------------------------
+%
+%-A-
+%\def\AA{{Acta Astronaut.}}
+\def\AdAM{{Adv. Appl. Mech.}}
+\def\AAM{{Arch. Appl. Mech.}}
+\def\AE{{Aircr. Eng.}}
+\def\AMater{{Acta Mater.}}
+\def\AMech{{Acta Mech.}}
+%-B-
+%-C-
+\def\CIP{{Comput. Phys.}}
+\def\CM{{Comput. Mech.}}
+\def\CMAME{{Comput. Methods Appl. Mech. Engrg.}}
+\def\CMS{{Comput. Mater. Sci.}}
+\def\CP{{Contemp. Phys.}}
+\def\CR{{Chem. Rev.}}
+\def\CS{{Comput. Struct.}}
+%-D-
+%-E-
+\def\EFM{{Eng. Fract. Mech.}}
+\def\EJMA{{Eur. J. Mech. A. Solids}}
+%-F-
+\def\FINEL{{Finite Elem. Anal. Des.}}
+%-G-
+%-H-
+%-I-
+\def\IJF{{Int. J. Fract. Mech.}}
+\def\IJNAMG{{Int. J. Numer. Anal. Methods Geomech.}}
+\def\IJNLM{{Int. J. Non Linear Mech.}}
+\def\IJNME{{Int. J. Numer. Methods Engrg.}}
+\def\IJP{{Int. J. Plast.}}
+\def\IJPLAS{{Int. J. Plast.}}
+\def\IJSS{{Int. J. Solids Struct.}}
+%-J-
+\def\JAM{{J. Appl. Mech.}}
+\def\JAP{{J. Appl. Phys.}}
+\def\JAPS{{J. Appl. Polym. Sci.}}
+\def\JACS{{J. Am. Ceram. Soc.}}
+\def\JCP{{J. Chem. Phys.}}
+\def\JE{{J. Elast.}}
+\def\JEM{{J. Eng. Mech.}}
+\def\JMPS{{J. Mech. Phys. Solids}}
+\def\JPIV{{J. Phys. IV}}
+\def\JPSA{{J. Polym. Sci., Part A: Polym. Chem.}}
+\def\JPSB{{J. Polym. Sci., Part B: Polym. Phys.}}
+\def\JPSC{{J. Polym. Sci., Part C: Polym. Lett.}}
+\def\JPSS{{J. Polym. Sci. Polym. Symp.}}
+%-K-
+\def\KZ{{Kolloid Z.}} 					%Kolloid Zeitschrift
+\def\KZPgerman{{Kolloid Z. Z. Polym.}}	% Kolloid Zeitschrift & Zeitschrift fur Polymere
+\def\KZP{{Colloid. Polym. Sci.}}			% Kolloid Zeitschrift & Zeitschrift fur Polymere
+
+%-L-
+%-M-
+\def\MCFM{{Mech. Cohes. Frict. Mater.}}
+\def\MM{{Mech. Mater.}}
+\def\MMS{{Mathematics and Mechanics of Solids}}
+\def\MRSBull{{MRS Bull.}}
+\def\MSEA{{Mater. Sci. Eng., A}}
+\def\MSMSE{{Modell. Simul. Mater. Sci. Eng.}}
+%-N-
+\def\NED{{Nucl. Eng. Des.}}
+%-O-
+%-P-
+\def\PM{{Philos. Mag.}}
+\def\PMA{{Philos. Mag. A}}
+\def\PML{{Phil. Mag. Lett.}}
+\def\PR{{Phys. Rev.}}
+\def\PRB{{Phys. Rev. B: Condens. Matter}}
+\def\PRL{{Phys. Rev. Lett.}}
+\def\PTA{{Philos. Trans. R. Soc. London, Ser. A}}
+\def\PTB{{Philos. Trans. R. Soc. London, Ser. B}}
+%-Q-
+%-R-
+\def\RCT{{Rubber Chem. Technol.}}
+\def\RPP{{Rep. Prog. Phys.}}
+\def\RSA{{Proc. R. Soc. London, Ser. A}}
+%-S-
+\def\SM{{Scr. Mater.}}
+%-T-
+\def\TAFM{{Theor. Appl. Fract. Mech.}}
+\def\TFS{{Trans. Faraday Soc.}}
+%-U-
+%-V-
+%-W-
+%-X-
+%-Y-
+%-Z-
+\def\ZAMP{{Z. angew. Math. Phys.}}
+\def\ZAMM{{Z. Angew. Math. Mech.}}
+
+%=======================================================================
+%   S P E Z I E L L E    F O N T S
+%=======================================================================
+
+%---FETTDRUCK MATHEMATISCHER SYMBOLE------------------------------------
+\def\boldsymboli#1{{%
+   \let\@nomath\@gobble\mathversion{bold}%
+   \mathchoice%
+      {\hbox{$\mathsurround0pt\displaystyle#1$}}%
+      {\hbox{$\mathsurround0pt\textstyle#1$}}%
+      {\hbox{$\mathsurround0pt\scriptstyle#1$}}%
+      {\hbox{$\mathsurround0pt\scriptscriptstyle#1$}}%
+}}
+
+%---GRIECHISCHE SCHRIFTZEICHEN------------------------------------------
+%   dick; nur im mathematischen Modus erlaubt;
+%   grosse griechische Schriftzeichen sind nicht kursiv,
+%   kleine griechische Schriftzeichen sind kursiv
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\BGamma     }{{\boldsymbol{\Gamma}}}
+\DeclareRobustCommand{\BDelta     }{{\boldsymbol{\Delta}}}
+\DeclareRobustCommand{\BTheta     }{{\boldsymbol{\Theta}}}
+\DeclareRobustCommand{\BLambda    }{{\boldsymbol{\Lambda}}}
+\DeclareRobustCommand{\BXi        }{{\boldsymbol{\Xi}}}
+\DeclareRobustCommand{\BPi        }{{\boldsymbol{\Pi}}}
+\DeclareRobustCommand{\BSigma     }{{\boldsymbol{\Sigma}}}
+\DeclareRobustCommand{\BUpsilon   }{{\boldsymbol{\Upsilon}}}
+\DeclareRobustCommand{\BPhi       }{{\boldsymbol{\Phi}}}
+\DeclareRobustCommand{\BPsi       }{{\boldsymbol{\Psi}}}
+\DeclareRobustCommand{\BOmega     }{{\boldsymbol{\Omega}}}
+\DeclareRobustCommand{\Balpha     }{{\boldsymbol{\alpha}}}
+\DeclareRobustCommand{\Bbeta      }{{\boldsymbol{\beta}}}
+\DeclareRobustCommand{\Bgamma     }{{\boldsymbol{\gamma}}}
+\DeclareRobustCommand{\Bdelta     }{{\boldsymbol{\delta}}}
+\DeclareRobustCommand{\Bepsilon   }{{\boldsymbol{\epsilon}}}
+\DeclareRobustCommand{\Bzeta      }{{\boldsymbol{\zeta}}}
+\DeclareRobustCommand{\Beta       }{{\boldsymbol{\eta}}}
+\DeclareRobustCommand{\Btheta     }{{\boldsymbol{\theta}}}
+\DeclareRobustCommand{\Biota      }{{\boldsymbol{\iota}}}
+\DeclareRobustCommand{\Bkappa     }{{\boldsymbol{\kappa}}}
+\DeclareRobustCommand{\Blambda    }{{\boldsymbol{\lambda}}}
+\DeclareRobustCommand{\Bmue       }{{\boldsymbol{\mu}}}
+\DeclareRobustCommand{\Bnue       }{{\boldsymbol{\nu}}}
+\DeclareRobustCommand{\Bxi        }{{\boldsymbol{\xi}}}
+\DeclareRobustCommand{\Bpi        }{{\boldsymbol{\pi}}}
+\DeclareRobustCommand{\Brho       }{{\boldsymbol{\rho}}}
+\DeclareRobustCommand{\Bsigma     }{{\boldsymbol{\sigma}}}
+\DeclareRobustCommand{\Btau       }{{\boldsymbol{\tau}}}
+\DeclareRobustCommand{\Bupsilon   }{{\boldsymbol{\upsilon}}}
+\DeclareRobustCommand{\Bphi       }{{\boldsymbol{\phi}}}
+\DeclareRobustCommand{\Bchi       }{{\boldsymbol{\chi}}}
+\DeclareRobustCommand{\Bpsi       }{{\boldsymbol{\psi}}}
+\DeclareRobustCommand{\Bomega     }{{\boldsymbol{\omega}}}
+\DeclareRobustCommand{\Bvarepsilon}{{\boldsymbol{\varepsilon}}}
+\DeclareRobustCommand{\Bvartheta  }{{\boldsymbol{\vartheta}}}
+\DeclareRobustCommand{\Bvarpi     }{{\boldsymbol{\varpi}}}
+\DeclareRobustCommand{\Bvarrho    }{{\boldsymbol{\varrho}}}
+\DeclareRobustCommand{\Bvarsigma  }{{\boldsymbol{\varsigma}}}
+\DeclareRobustCommand{\Bvarphi    }{{\boldsymbol{\varphi}}}
+\DeclareRobustCommand{\Bve        }{{\boldsymbol{\varepsilon}}}
+\DeclareRobustCommand{\Bvt        }{{\boldsymbol{\vartheta}}}
+\DeclareRobustCommand{\Bvp        }{{\boldsymbol{\varpi}}}
+\DeclareRobustCommand{\Bvr        }{{\boldsymbol{\varrho}}}
+\DeclareRobustCommand{\Bvs        }{{\boldsymbol{\varsigma}}}
+\DeclareRobustCommand{\Bvh        }{{\boldsymbol{\varphi}}}
+%...Spezielle Definitionen griechischer Schriftzeichen..................
+\DeclareRobustCommand{\ve}{\varepsilon}
+\DeclareRobustCommand{\vt}{\vartheta}
+\DeclareRobustCommand{\vp}{\varpi}
+\DeclareRobustCommand{\vr}{\varrho}
+\DeclareRobustCommand{\vs}{\varsigma}
+\DeclareRobustCommand{\vh}{\varphi}
+
+%---TENSOR- UND MENGENSYMBOLE-------------------------------------------
+%   Standardsymbole: nicht kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\Ibb}{U}{msb}{m}{n}
+
+\DeclareRobustCommand{\IA}{{\Ibb A}}
+\DeclareRobustCommand{\IB}{{\Ibb B}}
+\DeclareRobustCommand{\IC}{{\Ibb C}}
+\DeclareRobustCommand{\ID}{{\Ibb D}}
+\DeclareRobustCommand{\IE}{{\Ibb E}}
+\DeclareRobustCommand{\IF}{{\Ibb F}}
+\DeclareRobustCommand{\IG}{{\Ibb G}}
+\DeclareRobustCommand{\IH}{{\Ibb H}}
+\DeclareRobustCommand{\II}{{\Ibb I}}
+\DeclareRobustCommand{\IJ}{{\Ibb J}}
+\DeclareRobustCommand{\IK}{{\Ibb K}}
+\DeclareRobustCommand{\IL}{{\Ibb L}}
+\DeclareRobustCommand{\IM}{{\Ibb M}}
+\DeclareRobustCommand{\IN}{{\Ibb N}}
+\DeclareRobustCommand{\IO}{{\Ibb O}}
+\DeclareRobustCommand{\IP}{{\Ibb P}}
+\DeclareRobustCommand{\IQ}{{\Ibb Q}}
+\DeclareRobustCommand{\IR}{{\Ibb R}}
+\DeclareRobustCommand{\IS}{{\Ibb S}}
+\DeclareRobustCommand{\IT}{{\Ibb T}}
+\DeclareRobustCommand{\IU}{{\Ibb U}}
+\DeclareRobustCommand{\IV}{{\Ibb V}}
+\DeclareRobustCommand{\IW}{{\Ibb W}}
+\DeclareRobustCommand{\IX}{{\Ibb X}}
+\DeclareRobustCommand{\IY}{{\Ibb Y}}
+\DeclareRobustCommand{\IZ}{{\Ibb Z}}
+
+%---TENSOR- UND MENGENSYMBOLE-------------------------------------------
+%   kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\IKbb}{U}{bbm}{m}{sl}
+\DeclareMathAlphabet{\Ikbb}{U}{bbmss}{m}{it}
+
+\DeclareRobustCommand{\KIA}{{\IKbb A}}
+\DeclareRobustCommand{\KIB}{{\IKbb B}}
+\DeclareRobustCommand{\KIC}{{\IKbb C}}
+\DeclareRobustCommand{\KID}{{\IKbb D}}
+\DeclareRobustCommand{\KIE}{{\IKbb E}}
+\DeclareRobustCommand{\KIF}{{\IKbb F}}
+\DeclareRobustCommand{\KIG}{{\IKbb G}}
+\DeclareRobustCommand{\KIH}{{\IKbb H}}
+\DeclareRobustCommand{\KII}{{\IKbb I}}
+\DeclareRobustCommand{\KIJ}{{\IKbb J}}
+\DeclareRobustCommand{\KIK}{{\IKbb K}}
+\DeclareRobustCommand{\KIL}{{\IKbb L}}
+\DeclareRobustCommand{\KIM}{{\IKbb M}}
+\DeclareRobustCommand{\KIN}{{\IKbb N}}
+\DeclareRobustCommand{\KIO}{{\IKbb O}}
+\DeclareRobustCommand{\KIP}{{\IKbb P}}
+\DeclareRobustCommand{\KIQ}{{\IKbb Q}}
+\DeclareRobustCommand{\KIR}{{\IKbb R}}
+\DeclareRobustCommand{\KIS}{{\IKbb S}}
+\DeclareRobustCommand{\KIT}{{\IKbb T}}
+\DeclareRobustCommand{\KIU}{{\IKbb U}}
+\DeclareRobustCommand{\KIV}{{\IKbb V}}
+\DeclareRobustCommand{\KIW}{{\IKbb W}}
+\DeclareRobustCommand{\KIX}{{\IKbb X}}
+\DeclareRobustCommand{\KIY}{{\IKbb Y}}
+\DeclareRobustCommand{\KIZ}{{\IKbb Z}}
+
+\DeclareRobustCommand{\KIa}{{\IKbb a}}
+\DeclareRobustCommand{\KIb}{{\IKbb b}}
+\DeclareRobustCommand{\KIc}{{\IKbb c}}
+\DeclareRobustCommand{\KId}{{\IKbb d}}
+\DeclareRobustCommand{\KIe}{{\IKbb e}}
+\DeclareRobustCommand{\KIf}{{\IKbb f}}
+\DeclareRobustCommand{\KIg}{{\IKbb g}}
+\DeclareRobustCommand{\KIh}{{\IKbb h}}
+\DeclareRobustCommand{\KIi}{{\IKbb i}}
+\DeclareRobustCommand{\KIj}{{\IKbb j}}
+\DeclareRobustCommand{\KIk}{{\IKbb k}}
+\DeclareRobustCommand{\KIl}{{\IKbb l}}
+\DeclareRobustCommand{\KIm}{{\IKbb m}}
+\DeclareRobustCommand{\KIn}{{\IKbb n}}
+\DeclareRobustCommand{\KIo}{{\IKbb o}}
+\DeclareRobustCommand{\KIp}{{\IKbb p}}
+\DeclareRobustCommand{\KIq}{{\IKbb q}}
+\DeclareRobustCommand{\KIr}{{\IKbb r}}
+\DeclareRobustCommand{\KIs}{{\IKbb s}}
+\DeclareRobustCommand{\KIt}{{\IKbb t}}
+\DeclareRobustCommand{\KIu}{{\IKbb u}}
+\DeclareRobustCommand{\KIv}{{\IKbb v}}
+\DeclareRobustCommand{\KIw}{{\IKbb w}}
+\DeclareRobustCommand{\KIx}{{\IKbb x}}
+\DeclareRobustCommand{\KIy}{{\IKbb y}}
+\DeclareRobustCommand{\KIz}{{\IKbb z}}
+
+\DeclareRobustCommand{\kIA}{{\Ikbb A}}
+\DeclareRobustCommand{\kIB}{{\Ikbb B}}
+\DeclareRobustCommand{\kIC}{{\Ikbb C}}
+\DeclareRobustCommand{\kID}{{\Ikbb D}}
+\DeclareRobustCommand{\kIE}{{\Ikbb E}}
+\DeclareRobustCommand{\kIF}{{\Ikbb F}}
+\DeclareRobustCommand{\kIG}{{\Ikbb G}}
+\DeclareRobustCommand{\kIH}{{\Ikbb H}}
+\DeclareRobustCommand{\kII}{{\Ikbb I}}
+\DeclareRobustCommand{\kIJ}{{\Ikbb J}}
+\DeclareRobustCommand{\kIK}{{\Ikbb K}}
+\DeclareRobustCommand{\kIL}{{\Ikbb L}}
+\DeclareRobustCommand{\kIM}{{\Ikbb M}}
+\DeclareRobustCommand{\kIN}{{\Ikbb N}}
+\DeclareRobustCommand{\kIO}{{\Ikbb O}}
+\DeclareRobustCommand{\kIP}{{\Ikbb P}}
+\DeclareRobustCommand{\kIQ}{{\Ikbb Q}}
+\DeclareRobustCommand{\kIR}{{\Ikbb R}}
+\DeclareRobustCommand{\kIS}{{\Ikbb S}}
+\DeclareRobustCommand{\kIT}{{\Ikbb T}}
+\DeclareRobustCommand{\kIU}{{\Ikbb U}}
+\DeclareRobustCommand{\kIV}{{\Ikbb V}}
+\DeclareRobustCommand{\kIW}{{\Ikbb W}}
+\DeclareRobustCommand{\kIX}{{\Ikbb X}}
+\DeclareRobustCommand{\kIY}{{\Ikbb Y}}
+\DeclareRobustCommand{\kIZ}{{\Ikbb Z}}
+
+\DeclareRobustCommand{\kIa}{{\Ikbb a}}
+\DeclareRobustCommand{\kIb}{{\Ikbb b}}
+\DeclareRobustCommand{\kIc}{{\Ikbb c}}
+\DeclareRobustCommand{\kId}{{\Ikbb d}}
+\DeclareRobustCommand{\kIe}{{\Ikbb e}}
+\DeclareRobustCommand{\kIf}{{\Ikbb f}}
+\DeclareRobustCommand{\kIg}{{\Ikbb g}}
+\DeclareRobustCommand{\kIh}{{\Ikbb h}}
+\DeclareRobustCommand{\kIi}{{\Ikbb i}}
+\DeclareRobustCommand{\kIj}{{\Ikbb j}}
+\DeclareRobustCommand{\kIk}{{\Ikbb k}}
+\DeclareRobustCommand{\kIl}{{\Ikbb l}}
+\DeclareRobustCommand{\kIm}{{\Ikbb m}}
+\DeclareRobustCommand{\kIn}{{\Ikbb n}}
+\DeclareRobustCommand{\kIo}{{\Ikbb o}}
+\DeclareRobustCommand{\kIp}{{\Ikbb p}}
+\DeclareRobustCommand{\kIq}{{\Ikbb q}}
+\DeclareRobustCommand{\kIr}{{\Ikbb r}}
+\DeclareRobustCommand{\kIs}{{\Ikbb s}}
+\DeclareRobustCommand{\kIt}{{\Ikbb t}}
+\DeclareRobustCommand{\kIu}{{\Ikbb u}}
+\DeclareRobustCommand{\kIv}{{\Ikbb v}}
+\DeclareRobustCommand{\kIw}{{\Ikbb w}}
+\DeclareRobustCommand{\kIx}{{\Ikbb x}}
+\DeclareRobustCommand{\kIy}{{\Ikbb y}}
+\DeclareRobustCommand{\kIz}{{\Ikbb z}}
+
+%---TENSOR- UND MENGENSYMBOLE-------------------------------------------
+%   nicht kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\INbb}{U}{bbm}{m}{n}
+\DeclareMathAlphabet{\Inbb}{U}{bbmss}{m}{n}
+
+\DeclareRobustCommand{\NIA}{{\INbb A}}
+\DeclareRobustCommand{\NIB}{{\INbb B}}
+\DeclareRobustCommand{\NIC}{{\INbb C}}
+\DeclareRobustCommand{\NID}{{\INbb D}}
+\DeclareRobustCommand{\NIE}{{\INbb E}}
+\DeclareRobustCommand{\NIF}{{\INbb F}}
+\DeclareRobustCommand{\NIG}{{\INbb G}}
+\DeclareRobustCommand{\NIH}{{\INbb H}}
+\DeclareRobustCommand{\NII}{{\INbb I}}
+\DeclareRobustCommand{\NIJ}{{\INbb J}}
+\DeclareRobustCommand{\NIK}{{\INbb K}}
+\DeclareRobustCommand{\NIL}{{\INbb L}}
+\DeclareRobustCommand{\NIM}{{\INbb M}}
+\DeclareRobustCommand{\NIN}{{\INbb N}}
+\DeclareRobustCommand{\NIO}{{\INbb O}}
+\DeclareRobustCommand{\NIP}{{\INbb P}}
+\DeclareRobustCommand{\NIQ}{{\INbb Q}}
+\DeclareRobustCommand{\NIR}{{\INbb R}}
+\DeclareRobustCommand{\NIS}{{\INbb S}}
+\DeclareRobustCommand{\NIT}{{\INbb T}}
+\DeclareRobustCommand{\NIU}{{\INbb U}}
+\DeclareRobustCommand{\NIV}{{\INbb V}}
+\DeclareRobustCommand{\NIW}{{\INbb W}}
+\DeclareRobustCommand{\NIX}{{\INbb X}}
+\DeclareRobustCommand{\NIY}{{\INbb Y}}
+\DeclareRobustCommand{\NIZ}{{\INbb Z}}
+
+\DeclareRobustCommand{\NIa}{{\INbb a}}
+\DeclareRobustCommand{\NIb}{{\INbb b}}
+\DeclareRobustCommand{\NIc}{{\INbb c}}
+\DeclareRobustCommand{\NId}{{\INbb d}}
+\DeclareRobustCommand{\NIe}{{\INbb e}}
+\DeclareRobustCommand{\NIf}{{\INbb f}}
+\DeclareRobustCommand{\NIg}{{\INbb g}}
+\DeclareRobustCommand{\NIh}{{\INbb h}}
+\DeclareRobustCommand{\NIi}{{\INbb i}}
+\DeclareRobustCommand{\NIj}{{\INbb j}}
+\DeclareRobustCommand{\NIk}{{\INbb k}}
+\DeclareRobustCommand{\NIl}{{\INbb l}}
+\DeclareRobustCommand{\NIm}{{\INbb m}}
+\DeclareRobustCommand{\NIn}{{\INbb n}}
+\DeclareRobustCommand{\NIo}{{\INbb o}}
+\DeclareRobustCommand{\NIp}{{\INbb p}}
+\DeclareRobustCommand{\NIq}{{\INbb q}}
+\DeclareRobustCommand{\NIr}{{\INbb r}}
+\DeclareRobustCommand{\NIs}{{\INbb s}}
+\DeclareRobustCommand{\NIt}{{\INbb t}}
+\DeclareRobustCommand{\NIu}{{\INbb u}}
+\DeclareRobustCommand{\NIv}{{\INbb v}}
+\DeclareRobustCommand{\NIw}{{\INbb w}}
+\DeclareRobustCommand{\NIx}{{\INbb x}}
+\DeclareRobustCommand{\NIy}{{\INbb y}}
+\DeclareRobustCommand{\NIz}{{\INbb z}}
+
+\DeclareRobustCommand{\nIA}{{\Inbb A}}
+\DeclareRobustCommand{\nIB}{{\Inbb B}}
+\DeclareRobustCommand{\nIC}{{\Inbb C}}
+\DeclareRobustCommand{\nID}{{\Inbb D}}
+\DeclareRobustCommand{\nIE}{{\Inbb E}}
+\DeclareRobustCommand{\nIF}{{\Inbb F}}
+\DeclareRobustCommand{\nIG}{{\Inbb G}}
+\DeclareRobustCommand{\nIH}{{\Inbb H}}
+\DeclareRobustCommand{\nII}{{\Inbb I}}
+\DeclareRobustCommand{\nIJ}{{\Inbb J}}
+\DeclareRobustCommand{\nIK}{{\Inbb K}}
+\DeclareRobustCommand{\nIL}{{\Inbb L}}
+\DeclareRobustCommand{\nIM}{{\Inbb M}}
+\DeclareRobustCommand{\nIN}{{\Inbb N}}
+\DeclareRobustCommand{\nIO}{{\Inbb O}}
+\DeclareRobustCommand{\nIP}{{\Inbb P}}
+\DeclareRobustCommand{\nIQ}{{\Inbb Q}}
+\DeclareRobustCommand{\nIR}{{\Inbb R}}
+\DeclareRobustCommand{\nIS}{{\Inbb S}}
+\DeclareRobustCommand{\nIT}{{\Inbb T}}
+\DeclareRobustCommand{\nIU}{{\Inbb U}}
+\DeclareRobustCommand{\nIV}{{\Inbb V}}
+\DeclareRobustCommand{\nIW}{{\Inbb W}}
+\DeclareRobustCommand{\nIX}{{\Inbb X}}
+\DeclareRobustCommand{\nIY}{{\Inbb Y}}
+\DeclareRobustCommand{\nIZ}{{\Inbb Z}}
+
+\DeclareRobustCommand{\nIa}{{\Inbb a}}
+\DeclareRobustCommand{\nIb}{{\Inbb b}}
+\DeclareRobustCommand{\nIc}{{\Inbb c}}
+\DeclareRobustCommand{\nId}{{\Inbb d}}
+\DeclareRobustCommand{\nIe}{{\Inbb e}}
+\DeclareRobustCommand{\nIf}{{\Inbb f}}
+\DeclareRobustCommand{\nIg}{{\Inbb g}}
+\DeclareRobustCommand{\nIh}{{\Inbb h}}
+\DeclareRobustCommand{\nIi}{{\Inbb i}}
+\DeclareRobustCommand{\nIj}{{\Inbb j}}
+\DeclareRobustCommand{\nIk}{{\Inbb k}}
+\DeclareRobustCommand{\nIl}{{\Inbb l}}
+\DeclareRobustCommand{\nIm}{{\Inbb m}}
+\DeclareRobustCommand{\nIn}{{\Inbb n}}
+\DeclareRobustCommand{\nIo}{{\Inbb o}}
+\DeclareRobustCommand{\nIp}{{\Inbb p}}
+\DeclareRobustCommand{\nIq}{{\Inbb q}}
+\DeclareRobustCommand{\nIr}{{\Inbb r}}
+\DeclareRobustCommand{\nIs}{{\Inbb s}}
+\DeclareRobustCommand{\nIt}{{\Inbb t}}
+\DeclareRobustCommand{\nIu}{{\Inbb u}}
+\DeclareRobustCommand{\nIv}{{\Inbb v}}
+\DeclareRobustCommand{\nIw}{{\Inbb w}}
+\DeclareRobustCommand{\nIx}{{\Inbb x}}
+\DeclareRobustCommand{\nIy}{{\Inbb y}}
+\DeclareRobustCommand{\nIz}{{\Inbb z}}
+
+%---TENSOR- UND MENGENSYMBOLE-------------------------------------------
+%   nicht kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\IIbb}{U}{bbold}{m}{n}
+
+\DeclareRobustCommand{\IIA}{{\IIbb A}}
+\DeclareRobustCommand{\IIB}{{\IIbb B}}
+\DeclareRobustCommand{\IIC}{{\IIbb C}}
+\DeclareRobustCommand{\IID}{{\IIbb D}}
+\DeclareRobustCommand{\IIE}{{\IIbb E}}
+\DeclareRobustCommand{\IIF}{{\IIbb F}}
+\DeclareRobustCommand{\IIG}{{\IIbb G}}
+\DeclareRobustCommand{\IIH}{{\IIbb H}}
+\DeclareRobustCommand{\III}{{\IIbb I}}
+\DeclareRobustCommand{\IIJ}{{\IIbb J}}
+\DeclareRobustCommand{\IIK}{{\IIbb K}}
+\DeclareRobustCommand{\IIL}{{\IIbb L}}
+\DeclareRobustCommand{\IIM}{{\IIbb M}}
+\DeclareRobustCommand{\IIN}{{\IIbb N}}
+\DeclareRobustCommand{\IIO}{{\IIbb O}}
+\DeclareRobustCommand{\IIP}{{\IIbb P}}
+\DeclareRobustCommand{\IIQ}{{\IIbb Q}}
+\DeclareRobustCommand{\IIR}{{\IIbb R}}
+\DeclareRobustCommand{\IIS}{{\IIbb S}}
+\DeclareRobustCommand{\IIT}{{\IIbb T}}
+\DeclareRobustCommand{\IIU}{{\IIbb U}}
+\DeclareRobustCommand{\IIV}{{\IIbb V}}
+\DeclareRobustCommand{\IIW}{{\IIbb W}}
+\DeclareRobustCommand{\IIX}{{\IIbb X}}
+\DeclareRobustCommand{\IIY}{{\IIbb Y}}
+\DeclareRobustCommand{\IIZ}{{\IIbb Z}}
+
+\DeclareRobustCommand{\IIa}{{\IIbb a}}
+\DeclareRobustCommand{\IIb}{{\IIbb b}}
+\DeclareRobustCommand{\IIc}{{\IIbb c}}
+\DeclareRobustCommand{\IId}{{\IIbb d}}
+\DeclareRobustCommand{\IIe}{{\IIbb e}}
+\DeclareRobustCommand{\IIf}{{\IIbb f}}
+\DeclareRobustCommand{\IIg}{{\IIbb g}}
+\DeclareRobustCommand{\IIh}{{\IIbb h}}
+\DeclareRobustCommand{\IIi}{{\IIbb i}}
+\DeclareRobustCommand{\IIj}{{\IIbb j}}
+\DeclareRobustCommand{\IIk}{{\IIbb k}}
+\DeclareRobustCommand{\IIl}{{\IIbb l}}
+\DeclareRobustCommand{\IIm}{{\IIbb m}}
+\DeclareRobustCommand{\IIn}{{\IIbb n}}
+\DeclareRobustCommand{\IIo}{{\IIbb o}}
+\DeclareRobustCommand{\IIp}{{\IIbb p}}
+\DeclareRobustCommand{\IIq}{{\IIbb q}}
+\DeclareRobustCommand{\IIr}{{\IIbb r}}
+\DeclareRobustCommand{\IIs}{{\IIbb s}}
+\DeclareRobustCommand{\IIt}{{\IIbb t}}
+\DeclareRobustCommand{\IIu}{{\IIbb u}}
+\DeclareRobustCommand{\IIv}{{\IIbb v}}
+\DeclareRobustCommand{\IIw}{{\IIbb w}}
+\DeclareRobustCommand{\IIx}{{\IIbb x}}
+\DeclareRobustCommand{\IIy}{{\IIbb y}}
+\DeclareRobustCommand{\IIz}{{\IIbb z}}
+
+%---BUCHSTABEN----------------------------------------------------------
+%   dick, kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\BA}{{\boldsymbol{\mathnormal A}}}
+\DeclareRobustCommand{\BB}{{\boldsymbol{\mathnormal B}}}
+\DeclareRobustCommand{\BC}{{\boldsymbol{\mathnormal C}}}
+\DeclareRobustCommand{\BD}{{\boldsymbol{\mathnormal D}}}
+\DeclareRobustCommand{\BE}{{\boldsymbol{\mathnormal E}}}
+\DeclareRobustCommand{\BF}{{\boldsymbol{\mathnormal F}}}
+\DeclareRobustCommand{\BG}{{\boldsymbol{\mathnormal G}}}
+\DeclareRobustCommand{\BH}{{\boldsymbol{\mathnormal H}}}
+\DeclareRobustCommand{\BI}{{\boldsymbol{\mathnormal I}}}
+\DeclareRobustCommand{\BJ}{{\boldsymbol{\mathnormal J}}}
+\DeclareRobustCommand{\BK}{{\boldsymbol{\mathnormal K}}}
+\DeclareRobustCommand{\BL}{{\boldsymbol{\mathnormal L}}}
+\DeclareRobustCommand{\BM}{{\boldsymbol{\mathnormal M}}}
+\DeclareRobustCommand{\BN}{{\boldsymbol{\mathnormal N}}}
+\DeclareRobustCommand{\BO}{{\boldsymbol{\mathnormal O}}}
+\DeclareRobustCommand{\BP}{{\boldsymbol{\mathnormal P}}}
+\DeclareRobustCommand{\BQ}{{\boldsymbol{\mathnormal Q}}}
+\DeclareRobustCommand{\BR}{{\boldsymbol{\mathnormal R}}}
+\DeclareRobustCommand{\BS}{{\boldsymbol{\mathnormal S}}}
+\DeclareRobustCommand{\BT}{{\boldsymbol{\mathnormal T}}}
+\DeclareRobustCommand{\BU}{{\boldsymbol{\mathnormal U}}}
+\DeclareRobustCommand{\BV}{{\boldsymbol{\mathnormal V}}}
+\DeclareRobustCommand{\BW}{{\boldsymbol{\mathnormal W}}}
+\DeclareRobustCommand{\BX}{{\boldsymbol{\mathnormal X}}}
+\DeclareRobustCommand{\BY}{{\boldsymbol{\mathnormal Y}}}
+\DeclareRobustCommand{\BZ}{{\boldsymbol{\mathnormal Z}}}
+
+\DeclareRobustCommand{\Ba}{{\boldsymbol{\mathnormal a}}}
+\DeclareRobustCommand{\Bb}{{\boldsymbol{\mathnormal b}}}
+\DeclareRobustCommand{\Bc}{{\boldsymbol{\mathnormal c}}}
+\DeclareRobustCommand{\Bd}{{\boldsymbol{\mathnormal d}}}
+\DeclareRobustCommand{\Be}{{\boldsymbol{\mathnormal e}}}
+\DeclareRobustCommand{\Bf}{{\boldsymbol{\mathnormal f}}}
+\DeclareRobustCommand{\Bg}{{\boldsymbol{\mathnormal g}}}
+\DeclareRobustCommand{\Bh}{{\boldsymbol{\mathnormal h}}}
+\DeclareRobustCommand{\Bi}{{\boldsymbol{\mathnormal i}}}
+\DeclareRobustCommand{\Bj}{{\boldsymbol{\mathnormal j}}}
+\DeclareRobustCommand{\Bk}{{\boldsymbol{\mathnormal k}}}
+\DeclareRobustCommand{\Bl}{{\boldsymbol{\mathnormal l}}}
+\DeclareRobustCommand{\Bm}{{\boldsymbol{\mathnormal m}}}
+\DeclareRobustCommand{\Bn}{{\boldsymbol{\mathnormal n}}}
+\DeclareRobustCommand{\Bo}{{\boldsymbol{\mathnormal o}}}
+\DeclareRobustCommand{\Bp}{{\boldsymbol{\mathnormal p}}}
+\DeclareRobustCommand{\Bq}{{\boldsymbol{\mathnormal q}}}
+\DeclareRobustCommand{\Br}{{\boldsymbol{\mathnormal r}}}
+\DeclareRobustCommand{\Bs}{{\boldsymbol{\mathnormal s}}}
+\DeclareRobustCommand{\Bt}{{\boldsymbol{\mathnormal t}}}
+\DeclareRobustCommand{\Bu}{{\boldsymbol{\mathnormal u}}}
+\DeclareRobustCommand{\Bv}{{\boldsymbol{\mathnormal v}}}
+\DeclareRobustCommand{\Bw}{{\boldsymbol{\mathnormal w}}}
+\DeclareRobustCommand{\Bx}{{\boldsymbol{\mathnormal x}}}
+\DeclareRobustCommand{\By}{{\boldsymbol{\mathnormal y}}}
+\DeclareRobustCommand{\Bz}{{\boldsymbol{\mathnormal z}}}
+
+%---BUCHSTABEN----------------------------------------------------------
+%   dick, nicht kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\BnA}{{\boldsymbol{\mathrm A}}}
+\DeclareRobustCommand{\BnB}{{\boldsymbol{\mathrm B}}}
+\DeclareRobustCommand{\BnC}{{\boldsymbol{\mathrm C}}}
+\DeclareRobustCommand{\BnD}{{\boldsymbol{\mathrm D}}}
+\DeclareRobustCommand{\BnE}{{\boldsymbol{\mathrm E}}}
+\DeclareRobustCommand{\BnF}{{\boldsymbol{\mathrm F}}}
+\DeclareRobustCommand{\BnG}{{\boldsymbol{\mathrm G}}}
+\DeclareRobustCommand{\BnH}{{\boldsymbol{\mathrm H}}}
+\DeclareRobustCommand{\BnI}{{\boldsymbol{\mathrm I}}}
+\DeclareRobustCommand{\BnJ}{{\boldsymbol{\mathrm J}}}
+\DeclareRobustCommand{\BnK}{{\boldsymbol{\mathrm K}}}
+\DeclareRobustCommand{\BnL}{{\boldsymbol{\mathrm L}}}
+\DeclareRobustCommand{\BnM}{{\boldsymbol{\mathrm M}}}
+\DeclareRobustCommand{\BnN}{{\boldsymbol{\mathrm N}}}
+\DeclareRobustCommand{\BnO}{{\boldsymbol{\mathrm O}}}
+\DeclareRobustCommand{\BnP}{{\boldsymbol{\mathrm P}}}
+\DeclareRobustCommand{\BnQ}{{\boldsymbol{\mathrm Q}}}
+\DeclareRobustCommand{\BnR}{{\boldsymbol{\mathrm R}}}
+\DeclareRobustCommand{\BnS}{{\boldsymbol{\mathrm S}}}
+\DeclareRobustCommand{\BnT}{{\boldsymbol{\mathrm T}}}
+\DeclareRobustCommand{\BnU}{{\boldsymbol{\mathrm U}}}
+\DeclareRobustCommand{\BnV}{{\boldsymbol{\mathrm V}}}
+\DeclareRobustCommand{\BnW}{{\boldsymbol{\mathrm W}}}
+\DeclareRobustCommand{\BnX}{{\boldsymbol{\mathrm X}}}
+\DeclareRobustCommand{\BnY}{{\boldsymbol{\mathrm Y}}}
+\DeclareRobustCommand{\BnZ}{{\boldsymbol{\mathrm Z}}}
+
+\DeclareRobustCommand{\Bna}{{\boldsymbol{\mathrm a}}}
+\DeclareRobustCommand{\Bnb}{{\boldsymbol{\mathrm b}}}
+\DeclareRobustCommand{\Bnc}{{\boldsymbol{\mathrm c}}}
+\DeclareRobustCommand{\Bnd}{{\boldsymbol{\mathrm d}}}
+\DeclareRobustCommand{\Bne}{{\boldsymbol{\mathrm e}}}
+\DeclareRobustCommand{\Bnf}{{\boldsymbol{\mathrm f}}}
+\DeclareRobustCommand{\Bng}{{\boldsymbol{\mathrm g}}}
+\DeclareRobustCommand{\Bnh}{{\boldsymbol{\mathrm h}}}
+\DeclareRobustCommand{\Bni}{{\boldsymbol{\mathrm i}}}
+\DeclareRobustCommand{\Bnj}{{\boldsymbol{\mathrm j}}}
+\DeclareRobustCommand{\Bnk}{{\boldsymbol{\mathrm k}}}
+\DeclareRobustCommand{\Bnl}{{\boldsymbol{\mathrm l}}}
+\DeclareRobustCommand{\Bnm}{{\boldsymbol{\mathrm m}}}
+\DeclareRobustCommand{\Bnn}{{\boldsymbol{\mathrm n}}}
+\DeclareRobustCommand{\Bno}{{\boldsymbol{\mathrm o}}}
+\DeclareRobustCommand{\Bnp}{{\boldsymbol{\mathrm p}}}
+\DeclareRobustCommand{\Bnq}{{\boldsymbol{\mathrm q}}}
+\DeclareRobustCommand{\Bnr}{{\boldsymbol{\mathrm r}}}
+\DeclareRobustCommand{\Bns}{{\boldsymbol{\mathrm s}}}
+\DeclareRobustCommand{\Bnt}{{\boldsymbol{\mathrm t}}}
+\DeclareRobustCommand{\Bnu}{{\boldsymbol{\mathrm u}}}
+\DeclareRobustCommand{\Bnv}{{\boldsymbol{\mathrm v}}}
+\DeclareRobustCommand{\Bnw}{{\boldsymbol{\mathrm w}}}
+\DeclareRobustCommand{\Bnx}{{\boldsymbol{\mathrm x}}}
+\DeclareRobustCommand{\Bny}{{\boldsymbol{\mathrm y}}}
+\DeclareRobustCommand{\Bnz}{{\boldsymbol{\mathrm z}}}
+
+%---Symbole fuer Abbildungen oder Operatoren----------------------------
+%   normal und dick; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\Symb}{U}{rsfs}{m}{n}
+\def\BSymb#1{\pmb{\Symb{#1}}}
+
+\DeclareRobustCommand{\BSA}{{\BSymb A}}
+\DeclareRobustCommand{\BSB}{{\BSymb B}}
+\DeclareRobustCommand{\BSC}{{\BSymb C}}
+\DeclareRobustCommand{\BSD}{{\BSymb D}}
+\DeclareRobustCommand{\BSE}{{\BSymb E}}
+\DeclareRobustCommand{\BSF}{{\BSymb F}}
+\DeclareRobustCommand{\BSG}{{\BSymb G}}
+\DeclareRobustCommand{\BSH}{{\BSymb H}}
+\DeclareRobustCommand{\BSI}{{\BSymb I}}
+\DeclareRobustCommand{\BSJ}{{\BSymb J}}
+\DeclareRobustCommand{\BSK}{{\BSymb K}}
+\DeclareRobustCommand{\BSL}{{\BSymb L}}
+\DeclareRobustCommand{\BSM}{{\BSymb M}}
+\DeclareRobustCommand{\BSN}{{\BSymb N}}
+\DeclareRobustCommand{\BSO}{{\BSymb O}}
+\DeclareRobustCommand{\BSP}{{\BSymb P}}
+\DeclareRobustCommand{\BSQ}{{\BSymb Q}}
+\DeclareRobustCommand{\BSR}{{\BSymb R}}
+\DeclareRobustCommand{\BSS}{{\BSymb S}}
+\DeclareRobustCommand{\BST}{{\BSymb T}}
+\DeclareRobustCommand{\BSU}{{\BSymb U}}
+\DeclareRobustCommand{\BSV}{{\BSymb V}}
+\DeclareRobustCommand{\BSW}{{\BSymb W}}
+\DeclareRobustCommand{\BSX}{{\BSymb X}}
+\DeclareRobustCommand{\BSY}{{\BSymb Y}}
+\DeclareRobustCommand{\BSZ}{{\BSymb Z}}
+
+\DeclareRobustCommand{\SA}{{\Symb A}}
+\DeclareRobustCommand{\SB}{{\Symb B}}
+\DeclareRobustCommand{\SC}{{\Symb C}}
+\DeclareRobustCommand{\SD}{{\Symb D}}
+\DeclareRobustCommand{\SE}{{\Symb E}}
+\DeclareRobustCommand{\SF}{{\Symb F}}
+\DeclareRobustCommand{\SG}{{\Symb G}}
+\DeclareRobustCommand{\SH}{{\Symb H}}
+\DeclareRobustCommand{\SI}{{\Symb I}}
+\DeclareRobustCommand{\SJ}{{\Symb J}}
+\DeclareRobustCommand{\SK}{{\Symb K}}
+\DeclareRobustCommand{\SL}{{\Symb L}}
+\DeclareRobustCommand{\SM}{{\Symb M}}
+\DeclareRobustCommand{\SN}{{\Symb N}}
+\DeclareRobustCommand{\SO}{{\Symb O}}
+\DeclareRobustCommand{\SP}{{\Symb P}}
+\DeclareRobustCommand{\SQ}{{\Symb Q}}
+\DeclareRobustCommand{\SR}{{\Symb R}}
+\DeclareRobustCommand{\SS}{{\Symb S}}
+\DeclareRobustCommand{\ST}{{\Symb T}}
+\DeclareRobustCommand{\SU}{{\Symb U}}
+\DeclareRobustCommand{\SV}{{\Symb V}}
+\DeclareRobustCommand{\SW}{{\Symb W}}
+\DeclareRobustCommand{\SX}{{\Symb X}}
+\DeclareRobustCommand{\SY}{{\Symb Y}}
+\DeclareRobustCommand{\SZ}{{\Symb Z}}
+
+%---KALLIGRAPHISCHE SCHRIFTZEICHEN--------------------------------------
+%   dick; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\BcalA}{{\boldsymbol{\mathcal A}}}
+\DeclareRobustCommand{\BcalB}{{\boldsymbol{\mathcal B}}}
+\DeclareRobustCommand{\BcalC}{{\boldsymbol{\mathcal C}}}
+\DeclareRobustCommand{\BcalD}{{\boldsymbol{\mathcal D}}}
+\DeclareRobustCommand{\BcalE}{{\boldsymbol{\mathcal E}}}
+\DeclareRobustCommand{\BcalF}{{\boldsymbol{\mathcal F}}}
+\DeclareRobustCommand{\BcalG}{{\boldsymbol{\mathcal G}}}
+\DeclareRobustCommand{\BcalH}{{\boldsymbol{\mathcal H}}}
+\DeclareRobustCommand{\BcalI}{{\boldsymbol{\mathcal I}}}
+\DeclareRobustCommand{\BcalJ}{{\boldsymbol{\mathcal J}}}
+\DeclareRobustCommand{\BcalK}{{\boldsymbol{\mathcal K}}}
+\DeclareRobustCommand{\BcalL}{{\boldsymbol{\mathcal L}}}
+\DeclareRobustCommand{\BcalM}{{\boldsymbol{\mathcal M}}}
+\DeclareRobustCommand{\BcalN}{{\boldsymbol{\mathcal N}}}
+\DeclareRobustCommand{\BcalO}{{\boldsymbol{\mathcal O}}}
+\DeclareRobustCommand{\BcalP}{{\boldsymbol{\mathcal P}}}
+\DeclareRobustCommand{\BcalQ}{{\boldsymbol{\mathcal Q}}}
+\DeclareRobustCommand{\BcalR}{{\boldsymbol{\mathcal R}}}
+\DeclareRobustCommand{\BcalS}{{\boldsymbol{\mathcal S}}}
+\DeclareRobustCommand{\BcalT}{{\boldsymbol{\mathcal T}}}
+\DeclareRobustCommand{\BcalU}{{\boldsymbol{\mathcal U}}}
+\DeclareRobustCommand{\BcalV}{{\boldsymbol{\mathcal V}}}
+\DeclareRobustCommand{\BcalW}{{\boldsymbol{\mathcal W}}}
+\DeclareRobustCommand{\BcalX}{{\boldsymbol{\mathcal X}}}
+\DeclareRobustCommand{\BcalY}{{\boldsymbol{\mathcal Y}}}
+\DeclareRobustCommand{\BcalZ}{{\boldsymbol{\mathcal Z}}}
+
+%---KALLIGRAPHISCHE SCHRIFTZEICHEN--------------------------------------
+%   normal; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\calA}{{\mathcal A}}
+\DeclareRobustCommand{\calB}{{\mathcal B}}
+\DeclareRobustCommand{\calC}{{\mathcal C}}
+\DeclareRobustCommand{\calD}{{\mathcal D}}
+\DeclareRobustCommand{\calE}{{\mathcal E}}
+\DeclareRobustCommand{\calF}{{\mathcal F}}
+\DeclareRobustCommand{\calG}{{\mathcal G}}
+\DeclareRobustCommand{\calH}{{\mathcal H}}
+\DeclareRobustCommand{\calI}{{\mathcal I}}
+\DeclareRobustCommand{\calJ}{{\mathcal J}}
+\DeclareRobustCommand{\calK}{{\mathcal K}}
+\DeclareRobustCommand{\calL}{{\mathcal L}}
+\DeclareRobustCommand{\calM}{{\mathcal M}}
+\DeclareRobustCommand{\calN}{{\mathcal N}}
+\DeclareRobustCommand{\calO}{{\mathcal O}}
+\DeclareRobustCommand{\calP}{{\mathcal P}}
+\DeclareRobustCommand{\calQ}{{\mathcal Q}}
+\DeclareRobustCommand{\calR}{{\mathcal R}}
+\DeclareRobustCommand{\calS}{{\mathcal S}}
+\DeclareRobustCommand{\calT}{{\mathcal T}}
+\DeclareRobustCommand{\calU}{{\mathcal U}}
+\DeclareRobustCommand{\calV}{{\mathcal V}}
+\DeclareRobustCommand{\calW}{{\mathcal W}}
+\DeclareRobustCommand{\calX}{{\mathcal X}}
+\DeclareRobustCommand{\calY}{{\mathcal Y}}
+\DeclareRobustCommand{\calZ}{{\mathcal Z}}
+
+%---FRAKTUR-SCHRIFTZEICHEN----------------------------------------------
+%   dick; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\Bgothic}{U}{euf}{b}{n}
+
+\DeclareRobustCommand{\BfrakA}{{\Bgothic A}}
+\DeclareRobustCommand{\BfrakB}{{\Bgothic B}}
+\DeclareRobustCommand{\BfrakC}{{\Bgothic C}}
+\DeclareRobustCommand{\BfrakD}{{\Bgothic D}}
+\DeclareRobustCommand{\BfrakE}{{\Bgothic E}}
+\DeclareRobustCommand{\BfrakF}{{\Bgothic F}}
+\DeclareRobustCommand{\BfrakG}{{\Bgothic G}}
+\DeclareRobustCommand{\BfrakH}{{\Bgothic H}}
+\DeclareRobustCommand{\BfrakI}{{\Bgothic I}}
+\DeclareRobustCommand{\BfrakJ}{{\Bgothic J}}
+\DeclareRobustCommand{\BfrakK}{{\Bgothic K}}
+\DeclareRobustCommand{\BfrakL}{{\Bgothic L}}
+\DeclareRobustCommand{\BfrakM}{{\Bgothic M}}
+\DeclareRobustCommand{\BfrakN}{{\Bgothic N}}
+\DeclareRobustCommand{\BfrakO}{{\Bgothic O}}
+\DeclareRobustCommand{\BfrakP}{{\Bgothic P}}
+\DeclareRobustCommand{\BfrakQ}{{\Bgothic Q}}
+\DeclareRobustCommand{\BfrakR}{{\Bgothic R}}
+\DeclareRobustCommand{\BfrakS}{{\Bgothic S}}
+\DeclareRobustCommand{\BfrakT}{{\Bgothic T}}
+\DeclareRobustCommand{\BfrakU}{{\Bgothic U}}
+\DeclareRobustCommand{\BfrakV}{{\Bgothic V}}
+\DeclareRobustCommand{\BfrakW}{{\Bgothic W}}
+\DeclareRobustCommand{\BfrakX}{{\Bgothic X}}
+\DeclareRobustCommand{\BfrakY}{{\Bgothic Y}}
+\DeclareRobustCommand{\BfrakZ}{{\Bgothic Z}}
+
+\DeclareRobustCommand{\Bfraka}{{\Bgothic a}}
+\DeclareRobustCommand{\Bfrakb}{{\Bgothic b}}
+\DeclareRobustCommand{\Bfrakc}{{\Bgothic c}}
+\DeclareRobustCommand{\Bfrakd}{{\Bgothic d}}
+\DeclareRobustCommand{\Bfrake}{{\Bgothic e}}
+\DeclareRobustCommand{\Bfrakf}{{\Bgothic f}}
+\DeclareRobustCommand{\Bfrakg}{{\Bgothic g}}
+\DeclareRobustCommand{\Bfrakh}{{\Bgothic h}}
+\DeclareRobustCommand{\Bfraki}{{\Bgothic i}}
+\DeclareRobustCommand{\Bfrakj}{{\Bgothic j}}
+\DeclareRobustCommand{\Bfrakk}{{\Bgothic k}}
+\DeclareRobustCommand{\Bfrakl}{{\Bgothic l}}
+\DeclareRobustCommand{\Bfrakm}{{\Bgothic m}}
+\DeclareRobustCommand{\Bfrakn}{{\Bgothic n}}
+\DeclareRobustCommand{\Bfrako}{{\Bgothic o}}
+\DeclareRobustCommand{\Bfrakp}{{\Bgothic p}}
+\DeclareRobustCommand{\Bfrakq}{{\Bgothic q}}
+\DeclareRobustCommand{\Bfrakr}{{\Bgothic r}}
+\DeclareRobustCommand{\Bfraks}{{\Bgothic s}}
+\DeclareRobustCommand{\Bfrakt}{{\Bgothic t}}
+\DeclareRobustCommand{\Bfraku}{{\Bgothic u}}
+\DeclareRobustCommand{\Bfrakv}{{\Bgothic v}}
+\DeclareRobustCommand{\Bfrakw}{{\Bgothic w}}
+\DeclareRobustCommand{\Bfrakx}{{\Bgothic x}}
+\DeclareRobustCommand{\Bfraky}{{\Bgothic y}}
+\DeclareRobustCommand{\Bfrakz}{{\Bgothic z}}
+
+%---FRAKTUR-SCHRIFTZEICHEN----------------------------------------------
+%   normal; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\gothic}{U}{euf}{m}{n}
+
+\DeclareRobustCommand{\frakA}{{\gothic A}}
+\DeclareRobustCommand{\frakB}{{\gothic B}}
+\DeclareRobustCommand{\frakC}{{\gothic C}}
+\DeclareRobustCommand{\frakD}{{\gothic D}}
+\DeclareRobustCommand{\frakE}{{\gothic E}}
+\DeclareRobustCommand{\frakF}{{\gothic F}}
+\DeclareRobustCommand{\frakG}{{\gothic G}}
+\DeclareRobustCommand{\frakH}{{\gothic H}}
+\DeclareRobustCommand{\frakI}{{\gothic I}}
+\DeclareRobustCommand{\frakJ}{{\gothic J}}
+\DeclareRobustCommand{\frakK}{{\gothic K}}
+\DeclareRobustCommand{\frakL}{{\gothic L}}
+\DeclareRobustCommand{\frakM}{{\gothic M}}
+\DeclareRobustCommand{\frakN}{{\gothic N}}
+\DeclareRobustCommand{\frakO}{{\gothic O}}
+\DeclareRobustCommand{\frakP}{{\gothic P}}
+\DeclareRobustCommand{\frakQ}{{\gothic Q}}
+\DeclareRobustCommand{\frakR}{{\gothic R}}
+\DeclareRobustCommand{\frakS}{{\gothic S}}
+\DeclareRobustCommand{\frakT}{{\gothic T}}
+\DeclareRobustCommand{\frakU}{{\gothic U}}
+\DeclareRobustCommand{\frakV}{{\gothic V}}
+\DeclareRobustCommand{\frakW}{{\gothic W}}
+\DeclareRobustCommand{\frakX}{{\gothic X}}
+\DeclareRobustCommand{\frakY}{{\gothic Y}}
+\DeclareRobustCommand{\frakZ}{{\gothic Z}}
+
+\DeclareRobustCommand{\fraka}{{\gothic a}}
+\DeclareRobustCommand{\frakb}{{\gothic b}}
+\DeclareRobustCommand{\frakc}{{\gothic c}}
+\DeclareRobustCommand{\frakd}{{\gothic d}}
+\DeclareRobustCommand{\frake}{{\gothic e}}
+\DeclareRobustCommand{\frakf}{{\gothic f}}
+\DeclareRobustCommand{\frakg}{{\gothic g}}
+\DeclareRobustCommand{\frakh}{{\gothic h}}
+\DeclareRobustCommand{\fraki}{{\gothic i}}
+\DeclareRobustCommand{\frakj}{{\gothic j}}
+\DeclareRobustCommand{\frakk}{{\gothic k}}
+\DeclareRobustCommand{\frakl}{{\gothic l}}
+\DeclareRobustCommand{\frakm}{{\gothic m}}
+\DeclareRobustCommand{\frakn}{{\gothic n}}
+\DeclareRobustCommand{\frako}{{\gothic o}}
+\DeclareRobustCommand{\frakp}{{\gothic p}}
+\DeclareRobustCommand{\frakq}{{\gothic q}}
+\DeclareRobustCommand{\frakr}{{\gothic r}}
+\DeclareRobustCommand{\fraks}{{\gothic s}}
+\DeclareRobustCommand{\frakt}{{\gothic t}}
+\DeclareRobustCommand{\fraku}{{\gothic u}}
+\DeclareRobustCommand{\frakv}{{\gothic v}}
+\DeclareRobustCommand{\frakw}{{\gothic w}}
+\DeclareRobustCommand{\frakx}{{\gothic x}}
+\DeclareRobustCommand{\fraky}{{\gothic y}}
+\DeclareRobustCommand{\frakz}{{\gothic z}}
+
+%---EULERSCHE SCHRIFTZEICHEN--------------------------------------------
+%   dick; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\Beuler}{U}{eus}{b}{n}
+
+\DeclareRobustCommand{\BeulA}{{\Beuler A}}
+\DeclareRobustCommand{\BeulB}{{\Beuler B}}
+\DeclareRobustCommand{\BeulC}{{\Beuler C}}
+\DeclareRobustCommand{\BeulD}{{\Beuler D}}
+\DeclareRobustCommand{\BeulE}{{\Beuler E}}
+\DeclareRobustCommand{\BeulF}{{\Beuler F}}
+\DeclareRobustCommand{\BeulG}{{\Beuler G}}
+\DeclareRobustCommand{\BeulH}{{\Beuler H}}
+\DeclareRobustCommand{\BeulI}{{\Beuler I}}
+\DeclareRobustCommand{\BeulJ}{{\Beuler J}}
+\DeclareRobustCommand{\BeulK}{{\Beuler K}}
+\DeclareRobustCommand{\BeulL}{{\Beuler L}}
+\DeclareRobustCommand{\BeulM}{{\Beuler M}}
+\DeclareRobustCommand{\BeulN}{{\Beuler N}}
+\DeclareRobustCommand{\BeulO}{{\Beuler O}}
+\DeclareRobustCommand{\BeulP}{{\Beuler P}}
+\DeclareRobustCommand{\BeulQ}{{\Beuler Q}}
+\DeclareRobustCommand{\BeulR}{{\Beuler R}}
+\DeclareRobustCommand{\BeulS}{{\Beuler S}}
+\DeclareRobustCommand{\BeulT}{{\Beuler T}}
+\DeclareRobustCommand{\BeulU}{{\Beuler U}}
+\DeclareRobustCommand{\BeulV}{{\Beuler V}}
+\DeclareRobustCommand{\BeulW}{{\Beuler W}}
+\DeclareRobustCommand{\BeulX}{{\Beuler X}}
+\DeclareRobustCommand{\BeulY}{{\Beuler Y}}
+\DeclareRobustCommand{\BeulZ}{{\Beuler Z}}
+
+%---EULERSCHE SCHRIFTZEICHEN--------------------------------------------
+%   normal; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareMathAlphabet{\euler}{U}{eus}{m}{n}
+
+\DeclareRobustCommand{\eulA}{{\euler A}}
+\DeclareRobustCommand{\eulB}{{\euler B}}
+\DeclareRobustCommand{\eulC}{{\euler C}}
+\DeclareRobustCommand{\eulD}{{\euler D}}
+\DeclareRobustCommand{\eulE}{{\euler E}}
+\DeclareRobustCommand{\eulF}{{\euler F}}
+\DeclareRobustCommand{\eulG}{{\euler G}}
+\DeclareRobustCommand{\eulH}{{\euler H}}
+\DeclareRobustCommand{\eulI}{{\euler I}}
+\DeclareRobustCommand{\eulJ}{{\euler J}}
+\DeclareRobustCommand{\eulK}{{\euler K}}
+\DeclareRobustCommand{\eulL}{{\euler L}}
+\DeclareRobustCommand{\eulM}{{\euler M}}
+\DeclareRobustCommand{\eulN}{{\euler N}}
+\DeclareRobustCommand{\eulO}{{\euler O}}
+\DeclareRobustCommand{\eulP}{{\euler P}}
+\DeclareRobustCommand{\eulQ}{{\euler Q}}
+\DeclareRobustCommand{\eulR}{{\euler R}}
+\DeclareRobustCommand{\eulS}{{\euler S}}
+\DeclareRobustCommand{\eulT}{{\euler T}}
+\DeclareRobustCommand{\eulU}{{\euler U}}
+\DeclareRobustCommand{\eulV}{{\euler V}}
+\DeclareRobustCommand{\eulW}{{\euler W}}
+\DeclareRobustCommand{\eulX}{{\euler X}}
+\DeclareRobustCommand{\eulY}{{\euler Y}}
+\DeclareRobustCommand{\eulZ}{{\euler Z}}
+
+%---ZIFFERN-------------------------------------------------------------
+%   dick, kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\Bzero }{{\boldsymbol{\mathit 0}}}
+\DeclareRobustCommand{\Bone  }{{\boldsymbol{\mathit 1}}}
+\DeclareRobustCommand{\Btwo  }{{\boldsymbol{\mathit 2}}}
+\DeclareRobustCommand{\Bthree}{{\boldsymbol{\mathit 3}}}
+\DeclareRobustCommand{\Bfour }{{\boldsymbol{\mathit 4}}}
+\DeclareRobustCommand{\Bfive }{{\boldsymbol{\mathit 5}}}
+\DeclareRobustCommand{\Bsix  }{{\boldsymbol{\mathit 6}}}
+\DeclareRobustCommand{\Bseven}{{\boldsymbol{\mathit 7}}}
+\DeclareRobustCommand{\Beight}{{\boldsymbol{\mathit 8}}}
+\DeclareRobustCommand{\Bnine }{{\boldsymbol{\mathit 9}}}
+
+%---ZIFFERN-------------------------------------------------------------
+%   dick, nicht kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\Bnzero }{{\boldsymbol 0}}
+\DeclareRobustCommand{\Bnone  }{{\boldsymbol 1}}
+\DeclareRobustCommand{\Bntwo  }{{\boldsymbol 2}}
+\DeclareRobustCommand{\Bnthree}{{\boldsymbol 3}}
+\DeclareRobustCommand{\Bnfour }{{\boldsymbol 4}}
+\DeclareRobustCommand{\Bnfive }{{\boldsymbol 5}}
+\DeclareRobustCommand{\Bnsix  }{{\boldsymbol 6}}
+\DeclareRobustCommand{\Bnseven}{{\boldsymbol 7}}
+\DeclareRobustCommand{\Bneight}{{\boldsymbol 8}}
+\DeclareRobustCommand{\Bnnine }{{\boldsymbol 9}}
+
+%---ZIFFERN ALS TENSOR- UND MENGENSYMBOLE-------------------------------
+%   nicht kursiv; nur im mathematischen Modus erlaubt
+%-----------------------------------------------------------------------
+\DeclareRobustCommand{\Izero }{{\IIbb 0}}
+\DeclareRobustCommand{\Ione  }{{\IIbb 1}}
+\DeclareRobustCommand{\Itwo  }{{\IIbb 2}}
+\DeclareRobustCommand{\Ithree}{{\IIbb 3}}
+\DeclareRobustCommand{\Ifour }{{\IIbb 4}}
+\DeclareRobustCommand{\Ifive }{{\IIbb 5}}
+\DeclareRobustCommand{\Isix  }{{\IIbb 6}}
+\DeclareRobustCommand{\Iseven}{{\IIbb 7}}
+\DeclareRobustCommand{\Ieight}{{\IIbb 8}}
+\DeclareRobustCommand{\Inine }{{\IIbb 9}}
+

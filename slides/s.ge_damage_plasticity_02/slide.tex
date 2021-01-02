@@ -1,0 +1,31 @@
+%!TEX root = ../presentation.tex
+\begin{frame}{Gradient-Enhanced Damage-Plasticity Framework}
+    \textbf{Introducing \emph{nonlocality} of damage by means of the implicit gradient approach:}
+    \begin{minipage}{0.54\textwidth}
+    \begin{align*}
+        \sig &=  (1-\omega) \,\bar\sig  \\
+             &= (1-\omega)  \, \Cel : \eps^\*{el} \\
+        \eps^\*{el} &= \eps - \eps^\*{p}\\
+        \omega &= \omega ( \alphaD, \textcolor{red}{{\tilde{\kappa}}} ) \\
+        \dot \kappa &=  \dot \kappa (\dot \eps^\*{p}, \sig)
+    \end{align*}
+    \begin{align*}
+        \nabla \sig + \boldsymbol f &= \boldsymbol 0 \\
+    \textcolor{red}{\alphaDNL - l^2 \, \nabla ^2 \alphaDNL}&= \textcolor{red}{\alphaD}
+    \end{align*}
+    \end{minipage}
+    \begin{minipage}{0.44\textwidth}
+        \vspace{6.0em}
+
+        Damage $\omega$ related to local $\alphaD$ and  nonlocal $\textcolor{red}{{\tilde{\kappa}}}$ \\[3.5em]
+    Implicit \emph{Helmholtz-like} equation for the nonlocal damage driving field
+    \end{minipage}
+
+    \textbf{Characteristics:}
+    \begin{itemize}
+        \item Strongly nonlocal approach
+        \item Material length scale introduced into the continuum formulation by means of parameter $l$
+        \item Different formulations (nonlocal, over-nonlocal, ...)
+        \item Fully coupled system of PDEs
+    \end{itemize}
+\end{frame}
